@@ -21,7 +21,9 @@ Open the HTML file locally, or upload it somewhere to use. The documentation for
 
 ## Note
 
-Please ensure you take adequate care with your API key. Do not enter your API into anything you do not trust, as your sales data may be viewed by others. kDash will not expose your API key, however please take precaution with any other apps or clock faces that ask for your Kiezelpay API key, and ensure you are able to see that your API is not being exposed. Your API key is stored in the localstorage of your browser, and you can clear it if needed via your browser's devtools.
+Please ensure you take adequate care with your API key. Do not enter your API into anything you do not trust, as your sales data may be viewed by others. kDash will not expose your API key, however please take precaution with any other apps or clock faces that ask for your Kiezelpay API key, and ensure you are able to see that your API is not being exposed. 
+
+Your API key is stored in the localstorage of your browser, and you can clear it if needed via your browser's devtools (or simply change the key to overwrite it).
 
 ## Finally...
 
