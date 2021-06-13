@@ -242,7 +242,7 @@
     return localStorage.getItem(v);
   }
 
-  setInterval("location.reload(true);", 900000);
+  setInterval("location.reload(true);", 300000);
   let date = new Date();
   let apiKey = getSavedValue("apiKey");
   fetch('https://api.k-pay.io/api/merchant/today?offset=' + date.getTimezoneOffset() + '&key=' + apiKey)
