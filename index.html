@@ -225,8 +225,8 @@
     </div>
 
     <input type="password" id="apiKey"
-      onkeyup='saveValue(this);setTimeout(function() {document.location.reload()}, 3000);'
-      onkeydown='document.getElementById("apiKey").type = "text";'
+      onkeyup='saveValue(this);setTimeout(function() {document.location.reload()}, 1000);'
+      onkeydown='document.getElementById("apiKey").type = "text";document.getElementById("apiKey").style.color = "white";'
       placeholder="paste api key here" />
 
   </div>
