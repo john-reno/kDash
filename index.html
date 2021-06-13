@@ -232,6 +232,7 @@
 </body>
 <script>
   document.getElementById("apiKey").value = getSavedValue("apiKey");
+  let date = new Date();
 
   function saveValue(e) {
     var id = e.id;
@@ -245,10 +246,12 @@
     }
     return localStorage.getItem(v);
   }
-
-  setInterval("location.reload(true);", 300000);
-  let date = new Date();
+  
   let apiKey = getSavedValue("apiKey");
+
+if (getSavedValue("apiKey") != "") {
+    setInterval("location.reload(true);", 300000); // 5 minute refresh
+
   fetch('https://api.k-pay.io/api/merchant/today?offset=' + date.getTimezoneOffset() + '&key=' + apiKey)
     .then(res => res
       .json())
@@ -339,7 +342,7 @@
     .then(historyData => {
       let historyName = "";
       if (historyData.purchases === undefined) {
-        document.getElementById("history").innerHTML = "<span id='device'>Enter correct API key below</span>";
+        document.getElementById("history").innerHTML = "<span id='device'>Invalid API Key</span>";
       } else {
         var i;
         for (i = 0; i < 7; i++) {
@@ -354,9 +357,7 @@
           } else {
             ampm = "PM";
           }
-          console.log(H)
           let h = H % 12 || 12;
-          console.log(h)
           let j = d.toString().substring(4, 10);
           let bundleTrigger = "";
           if (historyData.purchases[i].bundleTriggeredBy !== null) {
@@ -372,5 +373,6 @@
         }
       }
     })
+  }else {document.getElementById("history").innerHTML = "<span id='device'>Please enter API key below</span>";}
 </script>
 </html>
