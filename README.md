@@ -1,8 +1,6 @@
 # kDash
 A dashboard for your tablet, TV or web browser which allows you to view your Kiezelpay sales data via your API key. It's a heavily modified version of the [K·pay merchant API module](https://github.com/KiezelPay/fitbit_kpay_merchant_api).
 
-![kStats hero](https://reno.watch/kdash-mockup.jpg)
-
 ## How does it work?
 
 👉 Add your kPay API key by pasting it in the lower right corner of the page. Find your API key here: https://kiezelpay.com/account/api
