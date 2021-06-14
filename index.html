@@ -1,379 +1,410 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta name="robots" content="noindex">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta charset="UTF-8">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Rubik" rel="stylesheet">
-  <style>
-    html,
-    body {
-      background: #1E202A;
-      overflow-x: hidden;
-      max-width: 100%;
-    }
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik" rel="stylesheet">
+    <style>
+        html,
+        body {
+            background: #1E202A;
+            overflow-x: hidden;
+            max-width: 100%;
+        }
 
-    .container {
-      display: flex;
-      flex-flow: row wrap;
-      justify-content: space-between;
-    }
+        .container {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-between;
+        }
 
-    .container-child {
-      flex-grow: 1;
-      flex-shrink: 0;
-    }
+        .container-child {
+            flex-grow: 1;
+            flex-shrink: 0;
+        }
 
-    svg {
-      width: 40px;
-      height: 40px;
-      color: #6272A4;
-    }
+        svg {
+            width: 40px;
+            height: 40px;
+            color: #6272A4;
+        }
 
-    @media (max-width: 700px) {
-      .container {
-        flex-direction: column;
-      }
+        p {
+            color: #CCC;
+            font-size: 35px;
+            font-family: 'Rubik', sans-serif;
+            text-align: left;
+            letter-spacing: 3px;
+            margin: 20px 0 20px 30px;
+        }
 
-      .container-child {
-        width: 100vw;
-      }
-    }
+        hr {
+            border: 1px solid white;
+            opacity: 0.2;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
 
-    p {
-      color: #CCC;
-      font-size: 35px;
-      font-family: 'Rubik', sans-serif;
-      text-align: left;
-      letter-spacing: 3px;
-      margin: 20px 0 20px 30px;
-    }
+        .bigNumbers {
+            margin-top: -10px;
+        }
 
-    hr {
-      border: 1px solid white;
-      opacity: 0.2;
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
+        .heading {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #6272A4;
+        }
 
-    .bigNumbers {
-      margin-top: -10px;
-    }
+        .headingSmall {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #6272A4;
+        }
 
-    .heading {
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      color: #6272A4;
-    }
+        #saleTime {
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: #BD93F9;
+        }
 
-    .headingSmall {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      color: #6272A4;
-    }
+        #saleDate {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #6272A4;
+        }
 
-    #saleTime {
-      font-size: 12px;
-      letter-spacing: 2px;
-      color: #BD93F9;
-    }
+        .extraData {
+            font-size: 18px;
+            letter-spacing: 2px;
+            color: #50FA7B;
+            margin-top: -10px;
+        }
 
-    #saleDate {
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: #6272A4;
-    }
+        #history {
+            line-height: 18px;
+            margin-top: -15px;
+        }
 
-    .extraData {
-      font-size: 18px;
-      letter-spacing: 2px;
-      color: #50FA7B;
-      margin-top: -10px;
-    }
+        #productName {
+            font-size: 18px;
+            letter-spacing: 0.5px;
+            line-height: 26px;
+        }
 
-    #history {
-      line-height: 16px;
-      margin-top: -15px;
-    }
+        #device {
+            font-size: 12px;
+            color: #50FA7B;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
-    #productName {
-      font-size: 18px;
-      letter-spacing: 0.5px;
-    }
+        hr {
+            border-top: 0px solid white;
+            opacity: 0.05;
+        }
 
-    #device {
-      font-size: 12px;
-      color: #50FA7B;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      line-height: 8px !important;
-    }
+        input {
+            height: 20px;
+            bottom: 0;
+            right: 0;
+            position: fixed;
+            margin: 0 3px 0 0;
+            text-align: right;
+            background-color: rgba(0, 0, 0, 0);
+            border: none;
+            color: #48494F;
+            width: 100%;
+            font-size: 10px;
+            font-family: 'Rubik', sans-serif;
+            outline-width: 1;
+        }
 
-    hr {
-      border-top: 0px solid white;
-      opacity: 0.05;
-    }
+        ::placeholder {
+            color: white;
+        }
 
-    input {
-      height: 20px;
-      bottom: 0;
-      right: 0;
-      position: fixed;
-      margin: 0 3px 0 0;
-      text-align: right;
-      background-color: rgba(0, 0, 0, 0);
-      border: none;
-      color: #48494F;
-      width: 100%;
-      font-size: 10px;
-      font-family: 'Rubik', sans-serif;
-      outline-width: 1;
-    }
+        @media (max-width: 700px) {
+            .container-child {
+                width: 48vw;
+            }
 
-    ::placeholder {
-      color: white;
-    }
-  </style>
+            body {
+                zoom: 70%;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="container-child">
-      <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-smartwatch"
-          viewBox="0 0 16 16">
-          <path d="M9 5a.5.5 0 0 0-1 0v3H6a.5.5 0 0 0 0 1h2.5a.5.5 0 0 0 .5-.5V5z" />
-          <path
-            d="M4 1.667v.383A2.5 2.5 0 0 0 2 4.5v7a2.5 2.5 0 0 0 2 2.45v.383C4 15.253 4.746 16 5.667 16h4.666c.92 0 1.667-.746 1.667-1.667v-.383a2.5 2.5 0 0 0 2-2.45V8h.5a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5H14v-.5a2.5 2.5 0 0 0-2-2.45v-.383C12 .747 11.254 0 10.333 0H5.667C4.747 0 4 .746 4 1.667zM4.5 3h7A1.5 1.5 0 0 1 13 4.5v7a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 3 11.5v-7A1.5 1.5 0 0 1 4.5 3z" />
-        </svg></p>
-      <p class="heading">sales today</p>
-      <p class="bigNumbers" id="sales"></p>
-      <p class="headingSmall">yesterday</p>
-      <p class="extraData" id="yesterdaySales"></p>
-      <hr>
-      <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trophy"
-          viewBox="0 0 16 16">
-          <path
-            d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5zm.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935zm10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935zM3.504 1c.007.517.026 1.006.056 1.469.13 2.028.457 3.546.87 4.667C5.294 9.48 6.484 10 7 10a.5.5 0 0 1 .5.5v2.61a1 1 0 0 1-.757.97l-1.426.356a.5.5 0 0 0-.179.085L4.5 15h7l-.638-.479a.501.501 0 0 0-.18-.085l-1.425-.356a1 1 0 0 1-.757-.97V10.5A.5.5 0 0 1 9 10c.516 0 1.706-.52 2.57-2.864.413-1.12.74-2.64.87-4.667.03-.463.049-.952.056-1.469H3.504z" />
-        </svg></p>
-      <p class="heading">rank today</p>
-      <p class="bigNumbers" id="rank"></p>
-      <p class="headingSmall">yesterday</p>
-      <p class="extraData" id="yesterdayRank"></p>
-      <hr>
-    </div>
-    <div class="container-child">
-      <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-percent"
-          viewBox="0 0 16 16">
-          <path
-            d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0zM4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
-        </svg></p>
-      <p class="heading">average sale price</p>
-      <p class="bigNumbers" id="average"></p>
-      <p class="headingSmall">yesterday</p>
-      <p class="extraData" id="yesterdayAveragePrice"></p>
-      <hr>
-      <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag"
-          viewBox="0 0 16 16">
-          <path
-            d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-        </svg></p>
-      <p class="heading">purchases today</p>
-      <p class="bigNumbers" id="numberToday"></p>
-      <p class="headingSmall">yesterday</p>
-      <p class="extraData" id="numberYesterday"></p>
-      <hr>
-    </div>
-    <div class="container-child">
-      <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
-        <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
-        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
-      </svg></p>
-      <p class="heading">most recent sales</p>
-      <p id="history"></p>
-    </div>
-    <div class="container-child">
-      <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3"
-          viewBox="0 0 16 16">
-          <path
-            d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" />
-          <path
-            d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-        </svg></p>
-      <p class="heading">sales this month</p>
-      <p class="bigNumbers" id="salesMonth"></p>
-      <p class="headingSmall">last month</p>
-      <p class="extraData" id="lastMonthSales"></p>
-      <hr>
-      <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-piggy-bank"
-          viewBox="0 0 16 16">
-          <path
-            d="M5 6.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm1.138-1.496A6.613 6.613 0 0 1 7.964 4.5c.666 0 1.303.097 1.893.273a.5.5 0 0 0 .286-.958A7.602 7.602 0 0 0 7.964 3.5c-.734 0-1.441.103-2.102.292a.5.5 0 1 0 .276.962z" />
-          <path fill-rule="evenodd"
-            d="M7.964 1.527c-2.977 0-5.571 1.704-6.32 4.125h-.55A1 1 0 0 0 .11 6.824l.254 1.46a1.5 1.5 0 0 0 1.478 1.243h.263c.3.513.688.978 1.145 1.382l-.729 2.477a.5.5 0 0 0 .48.641h2a.5.5 0 0 0 .471-.332l.482-1.351c.635.173 1.31.267 2.011.267.707 0 1.388-.095 2.028-.272l.543 1.372a.5.5 0 0 0 .465.316h2a.5.5 0 0 0 .478-.645l-.761-2.506C13.81 9.895 14.5 8.559 14.5 7.069c0-.145-.007-.29-.02-.431.261-.11.508-.266.705-.444.315.306.815.306.815-.417 0 .223-.5.223-.461-.026a.95.95 0 0 0 .09-.255.7.7 0 0 0-.202-.645.58.58 0 0 0-.707-.098.735.735 0 0 0-.375.562c-.024.243.082.48.32.654a2.112 2.112 0 0 1-.259.153c-.534-2.664-3.284-4.595-6.442-4.595zM2.516 6.26c.455-2.066 2.667-3.733 5.448-3.733 3.146 0 5.536 2.114 5.536 4.542 0 1.254-.624 2.41-1.67 3.248a.5.5 0 0 0-.165.535l.66 2.175h-.985l-.59-1.487a.5.5 0 0 0-.629-.288c-.661.23-1.39.359-2.157.359a6.558 6.558 0 0 1-2.157-.359.5.5 0 0 0-.635.304l-.525 1.471h-.979l.633-2.15a.5.5 0 0 0-.17-.534 4.649 4.649 0 0 1-1.284-1.541.5.5 0 0 0-.446-.275h-.56a.5.5 0 0 1-.492-.414l-.254-1.46h.933a.5.5 0 0 0 .488-.393zm12.621-.857a.565.565 0 0 1-.098.21.704.704 0 0 1-.044-.025c-.146-.09-.157-.175-.152-.223a.236.236 0 0 1 .117-.173c.049-.027.08-.021.113.012a.202.202 0 0 1 .064.199z" />
-        </svg></p>
-      <p class="heading">total income</p>
-      <p class="bigNumbers" id="totalIncome"></p>
-      <p class="headingSmall">total purchases</p>
-      <p class="extraData" id="totalPurchases"></p>
-      <hr>
-    </div>
+    <p class="headingSmall" id="lastSale">last sale</p>
+    <hr>
+    <div class="container">
+        <div class="container-child">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-smartwatch" viewBox="0 0 16 16">
+                    <path d="M9 5a.5.5 0 0 0-1 0v3H6a.5.5 0 0 0 0 1h2.5a.5.5 0 0 0 .5-.5V5z" />
+                    <path
+                        d="M4 1.667v.383A2.5 2.5 0 0 0 2 4.5v7a2.5 2.5 0 0 0 2 2.45v.383C4 15.253 4.746 16 5.667 16h4.666c.92 0 1.667-.746 1.667-1.667v-.383a2.5 2.5 0 0 0 2-2.45V8h.5a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5H14v-.5a2.5 2.5 0 0 0-2-2.45v-.383C12 .747 11.254 0 10.333 0H5.667C4.747 0 4 .746 4 1.667zM4.5 3h7A1.5 1.5 0 0 1 13 4.5v7a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 3 11.5v-7A1.5 1.5 0 0 1 4.5 3z" />
+                </svg></p>
+            <p class="heading">sales today</p>
+            <p class="bigNumbers" id="sales"></p>
+            <p class="headingSmall">yesterday</p>
+            <p class="extraData" id="yesterdaySales"></p>
+            <hr>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trophy"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5zm.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935zm10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935zM3.504 1c.007.517.026 1.006.056 1.469.13 2.028.457 3.546.87 4.667C5.294 9.48 6.484 10 7 10a.5.5 0 0 1 .5.5v2.61a1 1 0 0 1-.757.97l-1.426.356a.5.5 0 0 0-.179.085L4.5 15h7l-.638-.479a.501.501 0 0 0-.18-.085l-1.425-.356a1 1 0 0 1-.757-.97V10.5A.5.5 0 0 1 9 10c.516 0 1.706-.52 2.57-2.864.413-1.12.74-2.64.87-4.667.03-.463.049-.952.056-1.469H3.504z" />
+                </svg></p>
+            <p class="heading">rank today</p>
+            <p class="bigNumbers" id="rank"></p>
+            <p class="headingSmall">yesterday</p>
+            <p class="extraData" id="yesterdayRank"></p>
+            <hr>
+        </div>
+        <div class="container-child">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-percent"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0zM4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                </svg></p>
+            <p class="heading">average price</p>
+            <p class="bigNumbers" id="average"></p>
+            <p class="headingSmall">yesterday</p>
+            <p class="extraData" id="yesterdayAveragePrice"></p>
+            <hr>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+                </svg></p>
+            <p class="heading">purchases today</p>
+            <p class="bigNumbers" id="numberToday"></p>
+            <p class="headingSmall">yesterday</p>
+            <p class="extraData" id="numberYesterday"></p>
+            <hr>
+        </div>
+        <div class="container-child">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock"
+                    viewBox="0 0 16 16">
+                    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                </svg></p>
+            <p class="heading">recent sales</p>
+            <p id="history"></p>
+        </div>
+        <div class="container-child">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-calendar3" viewBox="0 0 16 16">
+                    <path
+                        d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" />
+                    <path
+                        d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                </svg></p>
+            <p class="heading">sales this month</p>
+            <p class="bigNumbers" id="salesMonth"></p>
+            <p class="headingSmall">last month</p>
+            <p class="extraData" id="lastMonthSales"></p>
+            <hr>
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-piggy-bank" viewBox="0 0 16 16">
+                    <path
+                        d="M5 6.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm1.138-1.496A6.613 6.613 0 0 1 7.964 4.5c.666 0 1.303.097 1.893.273a.5.5 0 0 0 .286-.958A7.602 7.602 0 0 0 7.964 3.5c-.734 0-1.441.103-2.102.292a.5.5 0 1 0 .276.962z" />
+                    <path fill-rule="evenodd"
+                        d="M7.964 1.527c-2.977 0-5.571 1.704-6.32 4.125h-.55A1 1 0 0 0 .11 6.824l.254 1.46a1.5 1.5 0 0 0 1.478 1.243h.263c.3.513.688.978 1.145 1.382l-.729 2.477a.5.5 0 0 0 .48.641h2a.5.5 0 0 0 .471-.332l.482-1.351c.635.173 1.31.267 2.011.267.707 0 1.388-.095 2.028-.272l.543 1.372a.5.5 0 0 0 .465.316h2a.5.5 0 0 0 .478-.645l-.761-2.506C13.81 9.895 14.5 8.559 14.5 7.069c0-.145-.007-.29-.02-.431.261-.11.508-.266.705-.444.315.306.815.306.815-.417 0 .223-.5.223-.461-.026a.95.95 0 0 0 .09-.255.7.7 0 0 0-.202-.645.58.58 0 0 0-.707-.098.735.735 0 0 0-.375.562c-.024.243.082.48.32.654a2.112 2.112 0 0 1-.259.153c-.534-2.664-3.284-4.595-6.442-4.595zM2.516 6.26c.455-2.066 2.667-3.733 5.448-3.733 3.146 0 5.536 2.114 5.536 4.542 0 1.254-.624 2.41-1.67 3.248a.5.5 0 0 0-.165.535l.66 2.175h-.985l-.59-1.487a.5.5 0 0 0-.629-.288c-.661.23-1.39.359-2.157.359a6.558 6.558 0 0 1-2.157-.359.5.5 0 0 0-.635.304l-.525 1.471h-.979l.633-2.15a.5.5 0 0 0-.17-.534 4.649 4.649 0 0 1-1.284-1.541.5.5 0 0 0-.446-.275h-.56a.5.5 0 0 1-.492-.414l-.254-1.46h.933a.5.5 0 0 0 .488-.393zm12.621-.857a.565.565 0 0 1-.098.21.704.704 0 0 1-.044-.025c-.146-.09-.157-.175-.152-.223a.236.236 0 0 1 .117-.173c.049-.027.08-.021.113.012a.202.202 0 0 1 .064.199z" />
+                </svg></p>
+            <p class="heading">total income</p>
+            <p class="bigNumbers" id="totalIncome"></p>
+            <p class="headingSmall">total purchases</p>
+            <p class="extraData" id="totalPurchases"></p>
+            <hr>
+        </div>
 
-    <input type="password" id="apiKey"
-      onkeyup='saveValue(this);setTimeout(function() {document.location.reload()}, 1000);'
-      onkeydown='document.getElementById("apiKey").type = "text";document.getElementById("apiKey").style.color = "white";'
-      placeholder="paste api key here" />
+        <input type="password" id="apiKey"
+            onkeyup='saveValue(this);setTimeout(function() {document.location.reload()}, 1000);'
+            onkeydown='document.getElementById("apiKey").type = "text";document.getElementById("apiKey").style.color = "white";'
+            placeholder="paste api key here" />
 
-  </div>
+    </div>
 </body>
 <script>
-  document.getElementById("apiKey").value = getSavedValue("apiKey");
-  let date = new Date();
+    document.getElementById("apiKey").value = getSavedValue("apiKey");
+    let date = new Date();
 
-  function saveValue(e) {
-    var id = e.id;
-    var val = e.value;
-    localStorage.setItem(id, val);
-  }
-
-  function getSavedValue(v) {
-    if (!localStorage.getItem(v)) {
-      return "";
+    function saveValue(e) {
+        var id = e.id;
+        var val = e.value;
+        localStorage.setItem(id, val);
     }
-    return localStorage.getItem(v);
-  }
-  
-  let apiKey = getSavedValue("apiKey");
 
-if (getSavedValue("apiKey") != "") {
-    setInterval("location.reload(true);", 300000); // 5 minute refresh
-
-  fetch('https://api.k-pay.io/api/merchant/today?offset=' + date.getTimezoneOffset() + '&key=' + apiKey)
-    .then(res => res
-      .json())
-    .then(salesData => {
-      let todayAmount = salesData.amount || 0;
-      let numberToday = salesData.purchases || 0;
-      let todayRank = salesData.rank || 0;
-      let averagePrice = Math.round(salesData.amount / salesData.purchases * 100) / 100 || 0;
-
-      if (todayAmount === undefined) {
-        document.getElementById("sales").innerHTML = "api key not found";
-        document.getElementById("rank").innerHTML = "";
-        document.getElementById("numberToday").innerHTML = "";
-      } else {
-        document.getElementById("sales").innerHTML = "$" + todayAmount.toFixed(2).toString().replace(
-          /\B(?=(\d{3})+(?!\d))/g, ",");
-        document.getElementById("rank").innerHTML = todayRank;
-        document.getElementById("numberToday").innerHTML = numberToday;
-        document.getElementById("average").innerHTML = "$" + averagePrice.toFixed(2);
-      }
-    })
-
-  fetch('https://api.k-pay.io/api/merchant/yesterday?offset=' + date.getTimezoneOffset() + '&key=' + apiKey)
-    .then(res => res
-      .json())
-    .then(salesDataYesterday => {
-      let yesterdayAmount = salesDataYesterday.amount || 0;
-      let numberYesterday = salesDataYesterday.purchases || 0;
-      let yesterdayRank = salesDataYesterday.rank || 0;
-      let yesterdayAveragePrice = Math.round(salesDataYesterday.amount / salesDataYesterday.purchases * 100) /
-        100 || 0;
-
-      if (yesterdayAmount === undefined) {
-        document.getElementById("yesterdaySales").innerHTML = "";
-        document.getElementById("yesterdayRank").innerHTML = "";
-        document.getElementById("numberYesterday").innerHTML = "";
-      } else {
-        document.getElementById("yesterdaySales").innerHTML = "$" + yesterdayAmount.toFixed(2).toString().replace(
-          /\B(?=(\d{3})+(?!\d))/g, ",");
-        document.getElementById("yesterdayRank").innerHTML = yesterdayRank;
-        document.getElementById("numberYesterday").innerHTML = numberYesterday;
-        document.getElementById("yesterdayAveragePrice").innerHTML = "$" + yesterdayAveragePrice.toFixed(2);
-      }
-    })
-
-  fetch('https://api.k-pay.io/api/merchant/summary?&key=' + apiKey)
-    .then(res => res
-      .json())
-    .then(monthData => {
-      let thisMonthAmount = monthData.currentBalance;
-      let lastMonthAmount;
-      let totalPurchases;
-      let totalIncome;
-
-      if (thisMonthAmount != undefined) {
-        thisMonthAmount = monthData.currentBalance || 0;
-        lastMonthAmount = monthData.nextPayout.amount || 0;
-        totalPurchases = monthData.totalPurchases || 0;
-        totalIncome = monthData.totalIncome || 0;
-
-        if (thisMonthAmount > lastMonthAmount) {
-          thisMonthAmount = thisMonthAmount - lastMonthAmount || 0;
-        } else {
-          thisMonthAmount = monthData.previousPayout.amount || 0;
+    function getSavedValue(v) {
+        if (!localStorage.getItem(v)) {
+            return "";
         }
-      }
+        return localStorage.getItem(v);
+    }
 
-      if (thisMonthAmount === undefined) {
-        document.getElementById("salesMonth").innerHTML = "$0.00";
-        document.getElementById("lastMonthSales").innerHTML = "$0.00";
-        document.getElementById("totalIncome").innerHTML = "$0.00";
-        document.getElementById("totalPurchases").innerHTML = "0";
-      } else {
-        document.getElementById("salesMonth").innerHTML = "$" + thisMonthAmount.toFixed(2).toString().replace(
-          /\B(?=(\d{3})+(?!\d))/g, ",");
-        document.getElementById("lastMonthSales").innerHTML = "$" + lastMonthAmount.toFixed(2).toString().replace(
-          /\B(?=(\d{3})+(?!\d))/g, ",");
-        document.getElementById("totalPurchases").innerHTML = totalPurchases.toString().replace(
-          /\B(?=(\d{3})+(?!\d))/g, ",");;
-        document.getElementById("totalIncome").innerHTML = "$" + totalIncome.toFixed(2).toString().replace(
-          /\B(?=(\d{3})+(?!\d))/g, ",");
-      }
-    })
+    let apiKey = getSavedValue("apiKey");
 
-  fetch('https://api.k-pay.io/api/merchant/history?sort=desc&amount=10&key=' + apiKey)
-    .then(res => res
-      .json())
-    .then(historyData => {
-      let historyName = "";
-      if (historyData.purchases === undefined) {
-        document.getElementById("history").innerHTML = "<span id='device'>Invalid API Key</span>";
-      } else {
-        var i;
-        for (i = 0; i < 7; i++) {
-          let purchaseTime = historyData.purchases[i].paidDate.replace(/\s/g, '') + "Z" || "--";
-          let e = purchaseTime.substring(0, 10) + "T" + purchaseTime.substring(10);
-          let d = new Date(e);
-          let f = d.toString().substring(21, 16);
-          let H = +f.substr(0, 2);
-          let ampm = "";
-          if (H < 12) {
-            ampm = "AM";
-          } else {
-            ampm = "PM";
-          }
-          let h = H % 12 || 12;
-          let j = d.toString().substring(4, 10);
-          let bundleTrigger = "";
-          if (historyData.purchases[i].bundleTriggeredBy !== null) {
-            bundleTrigger = " (" + historyData.purchases[i].bundleTriggeredBy + ")";
-          }
-          historyName = historyName + "<span id='saleTime'>" + h + f.substr(2, 3) + " " + ampm + "&nbsp;" +
-            "</span><span id='saleDate'> " + j + " • " + historyData.purchases[i].country +
-            "</span><br>" + "<span id='productName'>" + historyData.purchases[i].product + bundleTrigger + "</span>" +
-            "<br>" + "<span id='device'>" + historyData.purchases[i].device.replace(/\s*\(.*?\)\s*/g, '') +
-            "</span>" +
-            "<br>" + "<br><hr>";
-          document.getElementById("history").innerHTML = historyName + "<br>";
-        }
-      }
-    })
-  }else {document.getElementById("history").innerHTML = "<span id='device'>No API key</span>";}
+    if (getSavedValue("apiKey") != "") {
+        setInterval("location.reload(true);", 300000); // 5 minute refresh
+
+        fetch('https://api.k-pay.io/api/merchant/today?offset=' + date.getTimezoneOffset() + '&key=' + apiKey)
+            .then(res => res
+                .json())
+            .then(salesData => {
+                let todayAmount = salesData.amount || 0;
+                let numberToday = salesData.purchases || 0;
+                let todayRank = salesData.rank || 0;
+                let averagePrice = Math.round(salesData.amount / salesData.purchases * 100) / 100 || 0;
+
+                if (todayAmount === undefined) {
+                    document.getElementById("sales").innerHTML = "api key not found";
+                    document.getElementById("rank").innerHTML = "";
+                    document.getElementById("numberToday").innerHTML = "";
+                } else {
+                    document.getElementById("sales").innerHTML = "$" + todayAmount.toFixed(2).toString().replace(
+                        /\B(?=(\d{3})+(?!\d))/g, ",");
+                    document.getElementById("rank").innerHTML = todayRank;
+                    document.getElementById("numberToday").innerHTML = numberToday;
+                    document.getElementById("average").innerHTML = "$" + averagePrice.toFixed(2);
+                }
+            })
+
+        fetch('https://api.k-pay.io/api/merchant/yesterday?offset=' + date.getTimezoneOffset() + '&key=' + apiKey)
+            .then(res => res
+                .json())
+            .then(salesDataYesterday => {
+                let yesterdayAmount = salesDataYesterday.amount || 0;
+                let numberYesterday = salesDataYesterday.purchases || 0;
+                let yesterdayRank = salesDataYesterday.rank || 0;
+                let yesterdayAveragePrice = Math.round(salesDataYesterday.amount / salesDataYesterday.purchases *
+                        100) /
+                    100 || 0;
+
+                if (yesterdayAmount === undefined) {
+                    document.getElementById("yesterdaySales").innerHTML = "";
+                    document.getElementById("yesterdayRank").innerHTML = "";
+                    document.getElementById("numberYesterday").innerHTML = "";
+                } else {
+                    document.getElementById("yesterdaySales").innerHTML = "$" + yesterdayAmount.toFixed(2)
+                        .toString().replace(
+                            /\B(?=(\d{3})+(?!\d))/g, ",");
+                    document.getElementById("yesterdayRank").innerHTML = yesterdayRank;
+                    document.getElementById("numberYesterday").innerHTML = numberYesterday;
+                    document.getElementById("yesterdayAveragePrice").innerHTML = "$" + yesterdayAveragePrice
+                        .toFixed(2);
+                }
+            })
+
+        fetch('https://api.k-pay.io/api/merchant/summary?&key=' + apiKey)
+            .then(res => res
+                .json())
+            .then(monthData => {
+                let thisMonthAmount = monthData.currentBalance;
+                let lastMonthAmount;
+                let totalPurchases;
+                let totalIncome;
+
+                if (thisMonthAmount != undefined) {
+                    thisMonthAmount = monthData.currentBalance || 0;
+                    lastMonthAmount = monthData.nextPayout.amount || 0;
+                    totalPurchases = monthData.totalPurchases || 0;
+                    totalIncome = monthData.totalIncome || 0;
+
+                    if (thisMonthAmount > lastMonthAmount) {
+                        thisMonthAmount = thisMonthAmount - lastMonthAmount || 0;
+                    } else {
+                        thisMonthAmount = monthData.previousPayout.amount || 0;
+                    }
+                }
+
+                if (thisMonthAmount === undefined) {
+                    document.getElementById("salesMonth").innerHTML = "$0.00";
+                    document.getElementById("lastMonthSales").innerHTML = "$0.00";
+                    document.getElementById("totalIncome").innerHTML = "$0.00";
+                    document.getElementById("totalPurchases").innerHTML = "0";
+                } else {
+                    document.getElementById("salesMonth").innerHTML = "$" + thisMonthAmount.toFixed(2).toString()
+                        .replace(
+                            /\B(?=(\d{3})+(?!\d))/g, ",");
+                    document.getElementById("lastMonthSales").innerHTML = "$" + lastMonthAmount.toFixed(2)
+                        .toString().replace(
+                            /\B(?=(\d{3})+(?!\d))/g, ",");
+                    document.getElementById("totalPurchases").innerHTML = totalPurchases.toString().replace(
+                        /\B(?=(\d{3})+(?!\d))/g, ",");;
+                    document.getElementById("totalIncome").innerHTML = "$" + totalIncome.toFixed(2).toString()
+                        .replace(
+                            /\B(?=(\d{3})+(?!\d))/g, ",");
+                }
+            })
+
+        fetch('https://api.k-pay.io/api/merchant/history?sort=desc&amount=10&key=' + apiKey)
+            .then(res => res
+                .json())
+            .then(historyData => {
+                let historyName = "";
+                if (historyData.purchases === undefined) {
+                    document.getElementById("history").innerHTML = "<span id='device'>Invalid API Key</span>";
+                } else {
+                    var i;
+                    for (i = 0; i < 7; i++) {
+                        let purchaseTime = historyData.purchases[i].paidDate.replace(/\s/g, '') + "Z" || "--";
+                        let e = purchaseTime.substring(0, 10) + "T" + purchaseTime.substring(10);
+                        let d = new Date(e);
+                        let f = d.toString().substring(21, 16);
+                        let H = +f.substr(0, 2);
+                        let ampm = "";
+                        if (H < 12) {
+                            ampm = "AM";
+                        } else {
+                            ampm = "PM";
+                        }
+                        let h = H % 12 || 12;
+                        let j = d.toString().substring(4, 10);
+                        let bundleTrigger = "";
+                        if (historyData.purchases[i].bundleTriggeredBy !== null) {
+                            bundleTrigger = " (" + historyData.purchases[i].bundleTriggeredBy + ")";
+                        }
+                        historyName = historyName + "<span id='saleTime'>" + h + f.substr(2, 3) + " " + ampm +
+                            "&nbsp;" +
+                            "</span><span id='saleDate'> " + j + " &bull; " + historyData.purchases[i].country +
+                            "</span><br>" + "<span id='productName'>" + historyData.purchases[i].product +
+                            bundleTrigger + "</span>" +
+                            "<br>" + "<span id='device'>" + historyData.purchases[i].device.replace(
+                                /\s*\(.*?\)\s*/g, '') +
+                            "</span>" +
+                            "<br>" + "<br><hr>";
+                        document.getElementById("history").innerHTML = historyName + "<br>";
+                    }
+                        let purchaseTime = historyData.purchases[0].paidDate.replace(/\s/g, '') + "Z" || "--";
+                        let e = purchaseTime.substring(0, 10) + "T" + purchaseTime.substring(10);
+                        let d = new Date(e);
+                        let f = d.toString().substring(21, 16);
+                        let H = +f.substr(0, 2);
+                        let ampm = "";
+                        if (H < 12) {
+                            ampm = "AM";
+                        } else {
+                            ampm = "PM";
+                        }
+                        let h = H % 12 || 12;
+                        let j = d.toString().substring(4, 10);
+                        document.getElementById("lastSale").innerHTML = "last sale &bull; " + "<span id='saleTime'>" + h + f
+                            .substr(2, 3) + " " + ampm + "&nbsp;" + "</span><span id='saleDate'> " + j
+                }
+            })
+    } else {
+        document.getElementById("history").innerHTML = "<span id='device'>No API key</span>";
+    }
 </script>
+
 </html>
