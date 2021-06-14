@@ -365,7 +365,7 @@ if (getSavedValue("apiKey") != "") {
             bundleTrigger = " (" + historyData.purchases[i].bundleTriggeredBy + ")";
           }
           historyName = historyName + "<span id='saleTime'>" + h + f.substr(2, 3) + " " + ampm + "&nbsp;" +
-            "</span><span id='saleDate'> " + j +
+            "</span><span id='saleDate'> " + j + " • " + historyData.purchases[i].country +
             "</span><br>" + "<span id='productName'>" + historyData.purchases[i].product + bundleTrigger + "</span>" +
             "<br>" + "<span id='device'>" + historyData.purchases[i].device.replace(/\s*\(.*?\)\s*/g, '') +
             "</span>" +
