@@ -88,6 +88,20 @@
             margin-top: -10px;
         }
 
+        .extraDataFitbit {
+            font-size: 18px;
+            letter-spacing: 2px;
+            color: #26D7FD;
+            margin-top: -10px;
+        }
+
+        .extraDataGarmin {
+            font-size: 18px;
+            letter-spacing: 2px;
+            color: #DE9329;
+            margin-top: -10px;
+        }
+
         #history {
             line-height: 18px;
             margin-top: -15px;
@@ -158,6 +172,7 @@
             <p class="bigNumbers" id="sales"></p>
             <p class="headingSmall">yesterday</p>
             <p class="extraData" id="yesterdaySales"></p>
+
             <hr>
             <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trophy"
                     viewBox="0 0 16 16">
@@ -168,6 +183,11 @@
             <p class="bigNumbers" id="rank"></p>
             <p class="headingSmall">yesterday</p>
             <p class="extraData" id="yesterdayRank"></p>
+            <hr>
+            <p class="headingSmall">fitbit sales + rank</p>
+            <p class="extraDataFitbit" id="fitbitSales"></p>
+            <p class="headingSmall">garmin sales + rank</p>
+            <p class="extraDataGarmin" id="garminSales"></p>
             <hr>
         </div>
         <div class="container-child">
@@ -190,6 +210,11 @@
             <p class="bigNumbers" id="numberToday"></p>
             <p class="headingSmall">yesterday</p>
             <p class="extraData" id="numberYesterday"></p>
+            <hr>
+            <p class="headingSmall">fitbit purchases</p>
+            <p class="extraDataFitbit" id="fitbitPurchases"></p>
+            <p class="headingSmall">garmin purchases</p>
+            <p class="extraDataGarmin" id="garminPurchases"></p>
             <hr>
         </div>
         <div class="container-child">
@@ -276,6 +301,41 @@
                     document.getElementById("rank").innerHTML = todayRank;
                     document.getElementById("numberToday").innerHTML = numberToday;
                     document.getElementById("average").innerHTML = "$" + averagePrice.toFixed(2);
+                }
+            })
+
+        fetch('https://api.k-pay.io/api/merchant/today?&platform=fitbit&offset=' + date.getTimezoneOffset() + '&key=' + apiKey)
+            .then(res => res
+                .json())
+            .then(fitbitSalesData => {
+                let fitbitSales = fitbitSalesData.amount || 0;
+                let fitbitRank = fitbitSalesData.rank || 0;
+                let fitbitPurchases = fitbitSalesData.purchases || 0;
+
+                if (fitbitSales === undefined) {
+                    document.getElementById("fitbitSales").innerHTML = "";
+                } else {
+                    document.getElementById("fitbitSales").innerHTML = "$" + fitbitSales.toFixed(2).toString().replace(
+                        /\B(?=(\d{3})+(?!\d))/g, ",") + " &bull; " + fitbitRank;
+                    document.getElementById("fitbitPurchases").innerHTML = fitbitPurchases;
+                }
+            })
+        
+        fetch('https://api.k-pay.io/api/merchant/today?&platform=garmin&offset=' + date.getTimezoneOffset() + '&key=' + apiKey)
+            .then(res => res
+                .json())
+            .then(garminSalesData => {
+                let garminSales = garminSalesData.amount || 0;
+                let garminRank = garminSalesData.rank || 0;
+                let garminPurchases = garminSalesData.purchases || 0;
+
+                if (garminSales === undefined) {
+                    document.getElementById("garminSales").innerHTML = "";
+                    document.getElementById("garminPurchases").innerHTML = "";
+                } else {
+                    document.getElementById("garminSales").innerHTML = "$" + garminSales.toFixed(2).toString().replace(
+                        /\B(?=(\d{3})+(?!\d))/g, ",") + " &bull; " + garminRank;
+                        document.getElementById("garminPurchases").innerHTML = garminPurchases;
                 }
             })
 
