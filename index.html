@@ -374,7 +374,7 @@
                 .json())
             .then(monthData => {
                 let thisMonthAmount = monthData.currentBalance;
-                let lastMonthAmount;
+                let lastMonthAmount = monthData.previousPayout.amount || 0;
                 let totalPurchases;
                 let totalIncome;
 
