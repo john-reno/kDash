@@ -304,7 +304,8 @@
                 }
             })
 
-        fetch('https://api.k-pay.io/api/merchant/today?&platform=fitbit&offset=' + date.getTimezoneOffset() + '&key=' + apiKey)
+        fetch('https://api.k-pay.io/api/merchant/today?&platform=fitbit&offset=' + date.getTimezoneOffset() + '&key=' +
+                apiKey)
             .then(res => res
                 .json())
             .then(fitbitSalesData => {
@@ -315,13 +316,15 @@
                 if (fitbitSales === undefined) {
                     document.getElementById("fitbitSales").innerHTML = "";
                 } else {
-                    document.getElementById("fitbitSales").innerHTML = "$" + fitbitSales.toFixed(2).toString().replace(
-                        /\B(?=(\d{3})+(?!\d))/g, ",") + " &bull; " + fitbitRank;
+                    document.getElementById("fitbitSales").innerHTML = "$" + fitbitSales.toFixed(2).toString()
+                        .replace(
+                            /\B(?=(\d{3})+(?!\d))/g, ",") + " &bull; " + fitbitRank;
                     document.getElementById("fitbitPurchases").innerHTML = fitbitPurchases;
                 }
             })
-        
-        fetch('https://api.k-pay.io/api/merchant/today?&platform=garmin&offset=' + date.getTimezoneOffset() + '&key=' + apiKey)
+
+        fetch('https://api.k-pay.io/api/merchant/today?&platform=garmin&offset=' + date.getTimezoneOffset() + '&key=' +
+                apiKey)
             .then(res => res
                 .json())
             .then(garminSalesData => {
@@ -333,9 +336,10 @@
                     document.getElementById("garminSales").innerHTML = "";
                     document.getElementById("garminPurchases").innerHTML = "";
                 } else {
-                    document.getElementById("garminSales").innerHTML = "$" + garminSales.toFixed(2).toString().replace(
-                        /\B(?=(\d{3})+(?!\d))/g, ",") + " &bull; " + garminRank;
-                        document.getElementById("garminPurchases").innerHTML = garminPurchases;
+                    document.getElementById("garminSales").innerHTML = "$" + garminSales.toFixed(2).toString()
+                        .replace(
+                            /\B(?=(\d{3})+(?!\d))/g, ",") + " &bull; " + garminRank;
+                    document.getElementById("garminPurchases").innerHTML = garminPurchases;
                 }
             })
 
@@ -375,24 +379,17 @@
                 let totalIncome;
 
                 if (thisMonthAmount != undefined) {
-                    thisMonthAmount = monthData.currentBalance || 0;
-                    lastMonthAmount = monthData.nextPayout.amount || 0;
                     totalPurchases = monthData.totalPurchases || 0;
                     totalIncome = monthData.totalIncome || 0;
 
-                    if (thisMonthAmount > lastMonthAmount) {
-                        thisMonthAmount = thisMonthAmount - lastMonthAmount || 0;
+                    if (thisMonthAmount === lastMonthAmount) {
+                        thisMonthAmount = monthData.nextPayout.amount || 0;
+                        lastMonthAmount = monthData.previousPayout.amount || 0;
                     } else {
-                        thisMonthAmount = monthData.previousPayout.amount || 0;
+                        thisMonthAmount = monthData.currentBalance - monthData.nextPayout.amount || 0;
+                        lastMonthAmount = monthData.nextPayout.amount || 0;
                     }
-                }
 
-                if (thisMonthAmount === undefined) {
-                    document.getElementById("salesMonth").innerHTML = "$0.00";
-                    document.getElementById("lastMonthSales").innerHTML = "$0.00";
-                    document.getElementById("totalIncome").innerHTML = "$0.00";
-                    document.getElementById("totalPurchases").innerHTML = "0";
-                } else {
                     document.getElementById("salesMonth").innerHTML = "$" + thisMonthAmount.toFixed(2).toString()
                         .replace(
                             /\B(?=(\d{3})+(?!\d))/g, ",");
@@ -404,6 +401,11 @@
                     document.getElementById("totalIncome").innerHTML = "$" + totalIncome.toFixed(2).toString()
                         .replace(
                             /\B(?=(\d{3})+(?!\d))/g, ",");
+                } else {
+                    document.getElementById("salesMonth").innerHTML = "$0.00";
+                    document.getElementById("lastMonthSales").innerHTML = "$0.00";
+                    document.getElementById("totalIncome").innerHTML = "$0.00";
+                    document.getElementById("totalPurchases").innerHTML = "0";
                 }
             })
 
@@ -445,21 +447,22 @@
                             "<br><hr>";
                         document.getElementById("history").innerHTML = historyName + "<br>";
                     }
-                        let purchaseTime = historyData.purchases[0].paidDate.replace(/\s/g, '') + "Z" || "--";
-                        let e = purchaseTime.substring(0, 10) + "T" + purchaseTime.substring(10);
-                        let d = new Date(e);
-                        let f = d.toString().substring(21, 16);
-                        let H = +f.substr(0, 2);
-                        let ampm = "";
-                        if (H < 12) {
-                            ampm = "AM";
-                        } else {
-                            ampm = "PM";
-                        }
-                        let h = H % 12 || 12;
-                        let j = d.toString().substring(4, 10);
-                        document.getElementById("lastSale").innerHTML = "last sale &bull; " + "<span id='saleTime'>" + h + f
-                            .substr(2, 3) + " " + ampm + "&nbsp;" + "</span><span id='saleDate'> " + j;
+                    let purchaseTime = historyData.purchases[0].paidDate.replace(/\s/g, '') + "Z" || "--";
+                    let e = purchaseTime.substring(0, 10) + "T" + purchaseTime.substring(10);
+                    let d = new Date(e);
+                    let f = d.toString().substring(21, 16);
+                    let H = +f.substr(0, 2);
+                    let ampm = "";
+                    if (H < 12) {
+                        ampm = "AM";
+                    } else {
+                        ampm = "PM";
+                    }
+                    let h = H % 12 || 12;
+                    let j = d.toString().substring(4, 10);
+                    document.getElementById("lastSale").innerHTML = "last sale &bull; " + "<span id='saleTime'>" +
+                        h + f
+                        .substr(2, 3) + " " + ampm + "&nbsp;" + "</span><span id='saleDate'> " + j;
                 }
             })
     } else {
