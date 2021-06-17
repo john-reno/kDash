@@ -13,6 +13,8 @@ A dashboard for your tablet, TV or web browser which allows you to view your Kie
 
 You can try it out here: https://john-reno.github.io/kDash/index.html
 
+If you want to try it without an API key, you can use the Kiezelpay test API key ```0123456789abcdef0123456789abcdef``` - but please note that it will not display any product information (as the history API doesn't exist for the test API key).
+
 ## Usage
 
 Open the HTML file locally, or upload it somewhere to use. The documentation for the Kiezelpay API can be found here: https://kiezelpay.com/api/merchant/documentation
