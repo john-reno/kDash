@@ -103,14 +103,16 @@
         }
 
         .saleIncrease {
-            font-size: 16px;
+            font-size: 20px;
             letter-spacing: 1px;
             color: #1E202A;
             background-color: #F1FA8C;
-            padding: 3px 8px 3px 8px;
-            margin-right: 15px;
+            padding: 8px 12px 8px 12px;
             border-radius: 100px;
-            margin-top: -10px;
+        }
+
+        #saleStore{
+            margin-top: 10px;
         }
 
         #history {
@@ -169,6 +171,7 @@
 </head>
 
 <body>
+    <p id="saleStore"></p>
     <p class="headingSmall" id="lastSale">last sale</p>
     <hr>
     <div class="container">
@@ -401,8 +404,8 @@
                         newTotal = " + $" + (totalIncome - localStorage.getItem("lastTotal")).toFixed(2).toString()
                             .replace(
                                 /\B(?=(\d{3})+(?!\d))/g, ",");
-                        document.getElementById("lastSale").innerHTML = "<span class='saleIncrease'>" + newTotal +
-                            "</span>" + document.getElementById("lastSale").innerHTML;
+                        document.getElementById("saleStore").innerHTML = "<span class='saleIncrease'>" + newTotal +
+                            "</span>";
                     }
 
                     localStorage.setItem("lastTotal", totalIncome);
