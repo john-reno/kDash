@@ -102,6 +102,17 @@
             margin-top: -10px;
         }
 
+        .saleIncrease {
+            font-size: 16px;
+            letter-spacing: 1px;
+            color: #1E202A;
+            background-color: #F1FA8C;
+            padding: 3px 8px 3px 8px;
+            margin-right: 15px;
+            border-radius: 100px;
+            margin-top: -10px;
+        }
+
         #history {
             line-height: 18px;
             margin-top: -15px;
@@ -262,7 +273,9 @@
 </body>
 <script>
     document.getElementById("apiKey").value = getSavedValue("apiKey");
+
     let date = new Date();
+    let newTotal = "";
 
     function saveValue(e) {
         var id = e.id;
@@ -378,9 +391,21 @@
                 let totalPurchases;
                 let totalIncome;
 
+
                 if (thisMonthAmount != undefined) {
                     totalPurchases = monthData.totalPurchases || 0;
                     totalIncome = monthData.totalIncome || 0;
+
+                    if (localStorage.getItem("lastTotal") < totalIncome && localStorage.getItem("lastTotal") !==
+                        null) {
+                        newTotal = " + $" + (totalIncome - localStorage.getItem("lastTotal")).toFixed(2).toString()
+                            .replace(
+                                /\B(?=(\d{3})+(?!\d))/g, ",");
+                        document.getElementById("lastSale").innerHTML = "<span class='saleIncrease'>" + newTotal +
+                            "</span>" + document.getElementById("lastSale").innerHTML;
+                    }
+
+                    localStorage.setItem("lastTotal", totalIncome);
 
                     if (thisMonthAmount === lastMonthAmount) {
                         thisMonthAmount = monthData.nextPayout.amount || 0;
@@ -401,6 +426,8 @@
                     document.getElementById("totalIncome").innerHTML = "$" + totalIncome.toFixed(2).toString()
                         .replace(
                             /\B(?=(\d{3})+(?!\d))/g, ",");
+
+
                 } else {
                     document.getElementById("salesMonth").innerHTML = "$0.00";
                     document.getElementById("lastMonthSales").innerHTML = "$0.00";
