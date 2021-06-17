@@ -11,7 +11,7 @@ A web dashboard which allows you to view your Kiezelpay sales data via your API 
 
 ## Demo
 
-You can try it out here: https://john-reno.github.io/kDash/index.html
+You can try it out here: https://john-reno.github.io/kDash/
 
 If you want to try it without a real API key, you can use the Kiezelpay test API key ```0123456789abcdef0123456789abcdef``` - but please note that it will not display any product information (as the history API doesn't exist for the test API key).
 
