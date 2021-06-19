@@ -88,6 +88,21 @@
             color: #6272A4;
         }
 
+        .headingRight {
+            position: absolute;
+            text-align: right;
+            top: 0;
+            right: 0;
+            padding-top: 8px;
+            margin-right: 20px;
+            letter-spacing: 3px;
+            font-size: 12px;
+            color: #BD93F9;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
         #saleTime {
             font-size: 12px;
             letter-spacing: 2px;
@@ -204,6 +219,7 @@
 <body>
     <p id="saleStore"></p>
     <p class="headingSmall" id="lastSale"></p>
+    <p class="headingRight" id="timer"></p>
     <hr>
     <div class="container">
         <div class="container-child">
@@ -327,7 +343,40 @@
     let apiKey = getSavedValue("apiKey");
 
     if (getSavedValue("apiKey") != "") {
-        setInterval("location.reload(true);", 300000); // 5 minute refresh
+
+        document.getElementById('timer').innerHTML =
+            5 + ":" + 00; // 5 minute refresh timer
+        startTimer();
+
+
+        function startTimer() {
+            var presentTime = document.getElementById('timer').innerHTML;
+            var timeArray = presentTime.split(/[:]+/);
+            var m = timeArray[0];
+            var s = checkSecond((timeArray[1] - 1));
+            if (s == 59) {
+                m = m - 1
+            }
+            if (m < 0) {
+                location.reload(true);
+                return
+            }
+
+            document.getElementById('timer').innerHTML = m + ":" + s;
+            console.log(m)
+            setTimeout(startTimer, 1000);
+
+        }
+
+        function checkSecond(sec) {
+            if (sec < 10 && sec >= 0) {
+                sec = "0" + sec
+            };
+            if (sec < 0) {
+                sec = "59"
+            };
+            return sec;
+        }
 
         fetch('https://api.k-pay.io/api/merchant/today?offset=' + date.getTimezoneOffset() + '&key=' + apiKey)
             .then(res => res
@@ -363,10 +412,13 @@
                 if (fitbitSales === undefined) {
                     document.getElementById("fitbitSales").innerHTML = "";
                 } else {
-                    document.getElementById("fitbitSales").innerHTML = "<svg id='FitbitIcon' style='width:16px;height:16px'></svg>$" + fitbitSales.toFixed(2).toString()
+                    document.getElementById("fitbitSales").innerHTML =
+                        "<svg id='FitbitIcon' style='width:16px;height:16px'></svg>$" + fitbitSales.toFixed(2)
+                        .toString()
                         .replace(
                             /\B(?=(\d{3})+(?!\d))/g, ",") + " &nbsp;✮ " + fitbitRank;
-                    document.getElementById("fitbitPurchases").innerHTML = "<svg id='FitbitIcon' style='width:16px;height:16px'></svg>" + fitbitPurchases;
+                    document.getElementById("fitbitPurchases").innerHTML =
+                        "<svg id='FitbitIcon' style='width:16px;height:16px'></svg>" + fitbitPurchases;
                 }
             })
 
@@ -383,10 +435,13 @@
                     document.getElementById("garminSales").innerHTML = "";
                     document.getElementById("garminPurchases").innerHTML = "";
                 } else {
-                    document.getElementById("garminSales").innerHTML = "<svg id='GarminIcon' style='width:14px;height:14px'></svg>$" + garminSales.toFixed(2).toString()
+                    document.getElementById("garminSales").innerHTML =
+                        "<svg id='GarminIcon' style='width:14px;height:14px'></svg>$" + garminSales.toFixed(2)
+                        .toString()
                         .replace(
                             /\B(?=(\d{3})+(?!\d))/g, ",") + " &nbsp;✮ " + garminRank;
-                    document.getElementById("garminPurchases").innerHTML = "<svg id='GarminIcon' style='width:14px;height:14px'></svg>" + garminPurchases;
+                    document.getElementById("garminPurchases").innerHTML =
+                        "<svg id='GarminIcon' style='width:14px;height:14px'></svg>" + garminPurchases;
                 }
             })
 
@@ -503,7 +558,8 @@
                             "</span><span id='saleDate'> " + j + " &#8212; " + historyData.purchases[i].country +
                             "</span><br>" + "<span id='productName'>" + historyData.purchases[i].product +
                             bundleTrigger + "</span>" +
-                            "<br>" + "<svg id='" + historyData.purchases[i].platform + "Icon'></svg><span id='" + historyData.purchases[i].platform + "'>" + historyData
+                            "<br>" + "<svg id='" + historyData.purchases[i].platform + "Icon'></svg><span id='" +
+                            historyData.purchases[i].platform + "'>" + historyData
                             .purchases[i].device.replace(
                                 /\s*\(.*?\)\s*/g, '') +
                             "</span>" +
