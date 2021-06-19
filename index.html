@@ -88,21 +88,6 @@
             color: #6272A4;
         }
 
-        .headingRight {
-            position: absolute;
-            text-align: right;
-            top: 0;
-            right: 0;
-            padding-top: 6px;
-            margin-right: 20px;
-            letter-spacing: 3px;
-            font-size: 12px;
-            color: #BD93F9;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
         #saleTime {
             font-size: 12px;
             letter-spacing: 2px;
@@ -219,7 +204,6 @@
 <body>
     <p id="saleStore"></p>
     <p class="headingSmall" id="lastSale"></p>
-    <p class="headingRight" id="timer"></p>
     <hr>
     <div class="container">
         <div class="container-child">
@@ -344,39 +328,7 @@
 
     if (getSavedValue("apiKey") != "") {
 
-        document.getElementById('timer').innerHTML =
-            5 + ":" + 00; // 5 minute refresh timer
-        startTimer();
-
-
-        function startTimer() {
-            var presentTime = document.getElementById('timer').innerHTML;
-            var timeArray = presentTime.split(/[:]+/);
-            var m = timeArray[0];
-            var s = checkSecond((timeArray[1] - 1));
-            if (s == 59) {
-                m = m - 1
-            }
-            if (m < 0) {
-                location.reload(true);
-                return
-            }
-
-            document.getElementById('timer').innerHTML = m + ":" + s;
-            console.log(m)
-            setTimeout(startTimer, 1000);
-
-        }
-
-        function checkSecond(sec) {
-            if (sec < 10 && sec >= 0) {
-                sec = "0" + sec
-            };
-            if (sec < 0) {
-                sec = "59"
-            };
-            return sec;
-        }
+        setInterval("location.reload(true);", 300000); // 5 minute refresh
 
         fetch('https://api.k-pay.io/api/merchant/today?offset=' + date.getTimezoneOffset() + '&key=' + apiKey)
             .then(res => res
