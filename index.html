@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta http-equiv="refresh" content="300" >
     <meta charset="UTF-8">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
@@ -328,6 +327,8 @@
     let apiKey = getSavedValue("apiKey");
 
     if (getSavedValue("apiKey") != "") {
+
+        setInterval("location.reload(true);", 300000); // 5 minute refresh
 
         fetch('https://api.k-pay.io/api/merchant/today?offset=' + date.getTimezoneOffset() + '&key=' + apiKey)
             .then(res => res
