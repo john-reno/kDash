@@ -550,12 +550,20 @@
                         let h = H % 12 || 12;
                         let j = d.toString().substring(4, 10);
                         let bundleTrigger = "";
+                        let countryName = ""; // shorten some country names to make it look better on mobile
+                        if (historyData.purchases[i].country === "United States") {
+                            countryName = "USA";
+                        } else if (historyData.purchases[i].country === "United Kingdom") {
+                            countryName = "UK";
+                        } else {
+                            countryName = historyData.purchases[i].country;
+                        };
                         if (historyData.purchases[i].bundleTriggeredBy !== null) {
                             bundleTrigger = " (" + historyData.purchases[i].bundleTriggeredBy + ")";
                         }
                         historyName = historyName + "<span id='saleTime'>" + h + f.substr(2, 3) + " " + ampm +
                             "&nbsp;" +
-                            "</span><span id='saleDate'> " + j + " &#8212; " + historyData.purchases[i].country +
+                            "</span><span id='saleDate'> " + j + " &#8212; " + countryName +
                             "</span><br>" + "<span id='productName'>" + historyData.purchases[i].product +
                             bundleTrigger + "</span>" +
                             "<br>" + "<svg id='" + historyData.purchases[i].platform + "Icon'></svg><span id='" +
