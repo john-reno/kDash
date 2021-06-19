@@ -8,11 +8,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta charset="UTF-8">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Rubik" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
     <style>
         html,
         body {
-            background: #1E202A;
+            background: #1b1d25;
             overflow-x: hidden;
             max-width: 100%;
         }
@@ -34,12 +34,32 @@
             color: #6272A4;
         }
 
+        #FitbitIcon {
+            width: 12px;
+            height: 12px;
+            padding-right: 12px;
+            margin-bottom: -2px;
+            background-image: url("data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS4zNzAzIDIxLjI5ODEiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojNWJjZGI5O308L3N0eWxlPjwvZGVmcz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xMS44NCwxLjU4ODNhMS41ODg0LDEuNTg4NCwwLDEsMS0zLjE3NjcsMCwxLjU4ODQsMS41ODg0LDAsMCwxLDMuMTc2NywwWk0xMC4yNTIsNC40NzYyYTEuNjYwNiwxLjY2MDYsMCwxLDAsMS42NiwxLjY2QTEuNjMzOCwxLjYzMzgsMCwwLDAsMTAuMjUyLDQuNDc2MlptMCw0LjQ3NjJhMS43MzI4LDEuNzMyOCwwLDEsMCwxLjczMjcsMS43MzI4QTEuNzU2OSwxLjc1NjksMCwwLDAsMTAuMjUyLDguOTUyNFptMCw0LjU0ODRhMS42NjA2LDEuNjYwNiwwLDEsMCwxLjY2LDEuNjYwNkExLjY3OTQsMS42Nzk0LDAsMCwwLDEwLjI1MiwxMy41MDA4Wm0wLDQuNjIwN0ExLjU4ODMsMS41ODgzLDAsMSwwLDExLjg0LDE5LjcxLDEuNjAyNCwxLjYwMjQsMCwwLDAsMTAuMjUyLDE4LjEyMTVaTTE0LjY1Niw0LjI2YTEuOTExMywxLjkxMTMsMCwwLDAtMS44NzcxLDEuODc3MSwxLjg3NzEsMS44NzcxLDAsMSwwLDMuNzU0MiwwQTEuOTExMywxLjkxMTMsMCwwLDAsMTQuNjU2LDQuMjZabTAsNC40NzYyYTEuOTQ5NCwxLjk0OTQsMCwxLDAsMS45NDkzLDEuOTQ5NEExLjk0MTIsMS45NDEyLDAsMCwwLDE0LjY1Niw4LjczNThabTAsNC41NDg1YTEuODc3MSwxLjg3NzEsMCwxLDAsMS44NzcxLDEuODc3MUExLjkxMTMsMS45MTEzLDAsMCwwLDE0LjY1NiwxMy4yODQzWm00LjU0ODQtNC43NjUxYTIuMTY2LDIuMTY2LDAsMCwwLDAsNC4zMzE5QTIuMTI3MiwyLjEyNzIsMCwwLDAsMjEuMzcsMTAuNjg1MiwyLjIyLDIuMjIsMCwwLDAsMTkuMjA0NCw4LjUxOTJaTTUuNzc1OCw0LjY5MjhBMS40NDQsMS40NDQsMCwxLDAsNy4yMiw2LjEzNjcsMS40NDgyLDEuNDQ4MiwwLDAsMCw1Ljc3NTgsNC42OTI4Wm0wLDQuNDc2MmExLjUxNjIsMS41MTYyLDAsMSwwLDAsMy4wMzIzLDEuNTE2MiwxLjUxNjIsMCwwLDAsMC0zLjAzMjNabTAsNC41NDg0QTEuNDQ0LDEuNDQ0LDAsMSwwLDcuMjIsMTUuMTYxNCwxLjQ0ODIsMS40NDgyLDAsMCwwLDUuNzc1OCwxMy43MTc0Wk0xLjMsOS4zODU2YTEuMywxLjMsMCwxLDAsMS4zLDEuM0ExLjI5NDIsMS4yOTQyLDAsMCwwLDEuMyw5LjM4NTZaIi8+PC9zdmc+");
+            background-repeat: no-repeat;
+            color: #6272A4;
+        }
+
+        #GarminIcon {
+            width: 11px;
+            height: 11px;
+            padding-right: 14px;
+            margin-bottom: -1px;
+            background-image: url("data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS4zNzAzIDE4Ljk2NDUiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojNDVhM2ZjO2ZpbGwtcnVsZTpldmVub2RkO308L3N0eWxlPjwvZGVmcz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xOS41ODYzLDIwLjEzMTMsMS43ODM1LDIwLjEzMDZhMS43MzYzLDEuNzM2MywwLDAsMS0xLjUzOTEtLjg5LDEuNzM0NSwxLjczNDUsMCwwLDEsLjAwMDctMS43NzY3bDguOTAyMS0xNS40MWExLjc3NjgsMS43NzY4LDAsMCwxLDMuMDc2NywwbDguOTAwOCwxNS40MWExLjc3NzEsMS43NzcxLDAsMCwxLTEuNTM4NCwyLjY2NjRaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIC0xLjE2NjgpIi8+PC9zdmc+");
+            background-repeat: no-repeat;
+            color: #6272A4;
+        }
+
         p {
             color: #CCC;
             font-size: 35px;
             font-family: 'Rubik', sans-serif;
             text-align: left;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             margin: 20px 0 20px 30px;
         }
 
@@ -72,6 +92,7 @@
             font-size: 12px;
             letter-spacing: 2px;
             color: #BD93F9;
+            font-weight: 600;
         }
 
         #saleDate {
@@ -84,34 +105,35 @@
         .extraData {
             font-size: 18px;
             letter-spacing: 2px;
-            color: #50FA7B;
+            color: #F1FA8C;
             margin-top: -10px;
         }
 
         .extraDataFitbit {
             font-size: 18px;
             letter-spacing: 2px;
-            color: #26D7FD;
             margin-top: -10px;
+            color: #5bcdb9;
         }
 
         .extraDataGarmin {
             font-size: 18px;
             letter-spacing: 2px;
-            color: #DE9329;
             margin-top: -10px;
+            color: #45a3fc;
         }
 
         .saleIncrease {
             font-size: 20px;
             letter-spacing: 1px;
-            color: #1E202A;
-            background-color: #F1FA8C;
+            color: #1b1d25;
+            background-color: #50FA7B;
             padding: 8px 12px 8px 12px;
             border-radius: 100px;
+            font-weight: 600;
         }
 
-        #saleStore{
+        #saleStore {
             margin-top: 10px;
         }
 
@@ -122,15 +144,24 @@
 
         #productName {
             font-size: 18px;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             line-height: 26px;
         }
 
-        #device {
+        #Fitbit {
             font-size: 12px;
-            color: #50FA7B;
+            color: #5bcdb9;
             letter-spacing: 2px;
             text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        #Garmin {
+            font-size: 12px;
+            color: #45a3fc;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
         }
 
         hr {
@@ -172,7 +203,7 @@
 
 <body>
     <p id="saleStore"></p>
-    <p class="headingSmall" id="lastSale">last sale</p>
+    <p class="headingSmall" id="lastSale"></p>
     <hr>
     <div class="container">
         <div class="container-child">
@@ -183,7 +214,7 @@
                         d="M4 1.667v.383A2.5 2.5 0 0 0 2 4.5v7a2.5 2.5 0 0 0 2 2.45v.383C4 15.253 4.746 16 5.667 16h4.666c.92 0 1.667-.746 1.667-1.667v-.383a2.5 2.5 0 0 0 2-2.45V8h.5a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5H14v-.5a2.5 2.5 0 0 0-2-2.45v-.383C12 .747 11.254 0 10.333 0H5.667C4.747 0 4 .746 4 1.667zM4.5 3h7A1.5 1.5 0 0 1 13 4.5v7a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 3 11.5v-7A1.5 1.5 0 0 1 4.5 3z" />
                 </svg></p>
             <p class="heading">sales today</p>
-            <p class="bigNumbers" id="sales"></p>
+            <p class="bigNumbers" style="font-weight: 600;" id="sales"></p>
             <p class="headingSmall">yesterday</p>
             <p class="extraData" id="yesterdaySales"></p>
 
@@ -210,7 +241,7 @@
                     <path
                         d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0zM4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
                 </svg></p>
-            <p class="heading">average price</p>
+            <p class="heading">average price today</p>
             <p class="bigNumbers" id="average"></p>
             <p class="headingSmall">yesterday</p>
             <p class="extraData" id="yesterdayAveragePrice"></p>
@@ -314,7 +345,7 @@
                 } else {
                     document.getElementById("sales").innerHTML = "$" + todayAmount.toFixed(2).toString().replace(
                         /\B(?=(\d{3})+(?!\d))/g, ",");
-                    document.getElementById("rank").innerHTML = todayRank;
+                    document.getElementById("rank").innerHTML = "✮ " + todayRank;
                     document.getElementById("numberToday").innerHTML = numberToday;
                     document.getElementById("average").innerHTML = "$" + averagePrice.toFixed(2);
                 }
@@ -332,10 +363,10 @@
                 if (fitbitSales === undefined) {
                     document.getElementById("fitbitSales").innerHTML = "";
                 } else {
-                    document.getElementById("fitbitSales").innerHTML = "$" + fitbitSales.toFixed(2).toString()
+                    document.getElementById("fitbitSales").innerHTML = "<svg id='FitbitIcon' style='width:16px;height:16px'></svg>$" + fitbitSales.toFixed(2).toString()
                         .replace(
-                            /\B(?=(\d{3})+(?!\d))/g, ",") + " &bull; " + fitbitRank;
-                    document.getElementById("fitbitPurchases").innerHTML = fitbitPurchases;
+                            /\B(?=(\d{3})+(?!\d))/g, ",") + " &nbsp;✮ " + fitbitRank;
+                    document.getElementById("fitbitPurchases").innerHTML = "<svg id='FitbitIcon' style='width:16px;height:16px'></svg>" + fitbitPurchases;
                 }
             })
 
@@ -352,10 +383,10 @@
                     document.getElementById("garminSales").innerHTML = "";
                     document.getElementById("garminPurchases").innerHTML = "";
                 } else {
-                    document.getElementById("garminSales").innerHTML = "$" + garminSales.toFixed(2).toString()
+                    document.getElementById("garminSales").innerHTML = "<svg id='GarminIcon' style='width:14px;height:14px'></svg>$" + garminSales.toFixed(2).toString()
                         .replace(
-                            /\B(?=(\d{3})+(?!\d))/g, ",") + " &bull; " + garminRank;
-                    document.getElementById("garminPurchases").innerHTML = garminPurchases;
+                            /\B(?=(\d{3})+(?!\d))/g, ",") + " &nbsp;✮ " + garminRank;
+                    document.getElementById("garminPurchases").innerHTML = "<svg id='GarminIcon' style='width:14px;height:14px'></svg>" + garminPurchases;
                 }
             })
 
@@ -378,7 +409,7 @@
                     document.getElementById("yesterdaySales").innerHTML = "$" + yesterdayAmount.toFixed(2)
                         .toString().replace(
                             /\B(?=(\d{3})+(?!\d))/g, ",");
-                    document.getElementById("yesterdayRank").innerHTML = yesterdayRank;
+                    document.getElementById("yesterdayRank").innerHTML = "✮ " + yesterdayRank;
                     document.getElementById("numberYesterday").innerHTML = numberYesterday;
                     document.getElementById("yesterdayAveragePrice").innerHTML = "$" + yesterdayAveragePrice
                         .toFixed(2);
@@ -445,7 +476,8 @@
             .then(historyData => {
                 let historyName = "";
                 if (historyData.purchases === undefined) {
-                    document.getElementById("history").innerHTML = "<span id='device'>Invalid API Key</span>";
+                    document.getElementById("lastSale").innerHTML =
+                        "<span id='Fitbit'>Invalid API Key or too many requests. Check API key or wait before refreshing again.</span>";
                 } else {
                     var i;
                     for (i = 0; i < 7; i++) {
@@ -468,10 +500,11 @@
                         }
                         historyName = historyName + "<span id='saleTime'>" + h + f.substr(2, 3) + " " + ampm +
                             "&nbsp;" +
-                            "</span><span id='saleDate'> " + j + " &bull; " + historyData.purchases[i].country +
+                            "</span><span id='saleDate'> " + j + " &#8212; " + historyData.purchases[i].country +
                             "</span><br>" + "<span id='productName'>" + historyData.purchases[i].product +
                             bundleTrigger + "</span>" +
-                            "<br>" + "<span id='device'>" + historyData.purchases[i].device.replace(
+                            "<br>" + "<svg id='" + historyData.purchases[i].platform + "Icon'></svg><span id='" + historyData.purchases[i].platform + "'>" + historyData
+                            .purchases[i].device.replace(
                                 /\s*\(.*?\)\s*/g, '') +
                             "</span>" +
                             "<br><hr>";
@@ -490,13 +523,13 @@
                     }
                     let h = H % 12 || 12;
                     let j = d.toString().substring(4, 10);
-                    document.getElementById("lastSale").innerHTML = "last sale &bull; " + "<span id='saleTime'>" +
+                    document.getElementById("lastSale").innerHTML = "last sale &#8212; " + "<span id='saleTime'>" +
                         h + f
                         .substr(2, 3) + " " + ampm + "&nbsp;" + "</span><span id='saleDate'> " + j;
                 }
             })
     } else {
-        document.getElementById("history").innerHTML = "<span id='device'>No API key</span>";
+        document.getElementById("lastSale").innerHTML = "<span id='Fitbit'>No API key</span>";
     }
 </script>
 
