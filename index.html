@@ -15,6 +15,7 @@
             background: #1b1d25;
             overflow-x: hidden;
             max-width: 100%;
+            margin: 0;
         }
 
         .container {
@@ -216,7 +217,7 @@
             <p class="heading">sales today</p>
             <p class="bigNumbers" style="font-weight: 600;" id="sales"></p>
             <p class="headingSmall">yesterday</p>
-            <p class="extraData" id="yesterdaySales"></p>
+            <p class="extraData" style="font-weight: 600;"  id="yesterdaySales"></p>
 
             <hr>
             <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trophy"
@@ -346,7 +347,7 @@
                 } else {
                     document.getElementById("sales").innerHTML = "$" + todayAmount.toFixed(2).toString().replace(
                         /\B(?=(\d{3})+(?!\d))/g, ",");
-                    document.getElementById("rank").innerHTML = "✮ " + todayRank;
+                    document.getElementById("rank").innerHTML = todayRank;
                     document.getElementById("numberToday").innerHTML = numberToday;
                     document.getElementById("average").innerHTML = "$" + averagePrice.toFixed(2);
                 }
@@ -368,7 +369,7 @@
                         "<svg id='FitbitIcon' style='width:16px;height:16px'></svg>$" + fitbitSales.toFixed(2)
                         .toString()
                         .replace(
-                            /\B(?=(\d{3})+(?!\d))/g, ",") + " &nbsp;✮ " + fitbitRank;
+                            /\B(?=(\d{3})+(?!\d))/g, ",") + " — " + fitbitRank;
                     document.getElementById("fitbitPurchases").innerHTML =
                         "<svg id='FitbitIcon' style='width:16px;height:16px'></svg>" + fitbitPurchases;
                 }
@@ -391,7 +392,7 @@
                         "<svg id='GarminIcon' style='width:14px;height:14px'></svg>$" + garminSales.toFixed(2)
                         .toString()
                         .replace(
-                            /\B(?=(\d{3})+(?!\d))/g, ",") + " &nbsp;✮ " + garminRank;
+                            /\B(?=(\d{3})+(?!\d))/g, ",") + " — " + garminRank;
                     document.getElementById("garminPurchases").innerHTML =
                         "<svg id='GarminIcon' style='width:14px;height:14px'></svg>" + garminPurchases;
                 }
@@ -416,7 +417,7 @@
                     document.getElementById("yesterdaySales").innerHTML = "$" + yesterdayAmount.toFixed(2)
                         .toString().replace(
                             /\B(?=(\d{3})+(?!\d))/g, ",");
-                    document.getElementById("yesterdayRank").innerHTML = "✮ " + yesterdayRank;
+                    document.getElementById("yesterdayRank").innerHTML = yesterdayRank;
                     document.getElementById("numberYesterday").innerHTML = numberYesterday;
                     document.getElementById("yesterdayAveragePrice").innerHTML = "$" + yesterdayAveragePrice
                         .toFixed(2);
@@ -439,7 +440,7 @@
 
                     if (localStorage.getItem("lastTotal") < totalIncome && localStorage.getItem("lastTotal") !==
                         null) {
-                        newTotal = " + $" + (totalIncome - localStorage.getItem("lastTotal")).toFixed(2).toString()
+                        newTotal = "+ $" + (totalIncome - localStorage.getItem("lastTotal")).toFixed(2).toString()
                             .replace(
                                 /\B(?=(\d{3})+(?!\d))/g, ",");
                         document.getElementById("saleStore").innerHTML = "<span class='saleIncrease'>" + newTotal +
@@ -507,6 +508,12 @@
                             countryName = "USA";
                         } else if (historyData.purchases[i].country === "United Kingdom") {
                             countryName = "UK";
+                        } else if (historyData.purchases[i].country === "Australia") {
+                            countryName = "AUS";
+                        } else if (historyData.purchases[i].country === "New Zealand") {
+                            countryName = "NZ";
+                        } else if (historyData.purchases[i].country === "United Arab Emirates") {
+                            countryName = "UAE";
                         } else {
                             countryName = historyData.purchases[i].country;
                         };
@@ -515,8 +522,8 @@
                         }
                         historyName = historyName + "<span id='saleTime'>" + h + f.substr(2, 3) + " " + ampm +
                             "&nbsp;" +
-                            "</span><span id='saleDate'> " + j + " &#8212; " + countryName +
-                            "</span><br>" + "<span id='productName'>" + historyData.purchases[i].product +
+                            "</span><span id='saleDate'> " + j + " &#8212; " + "<span style='color:#CCC;'>" + countryName +
+                            "</span></span><br>" + "<span id='productName'>" + historyData.purchases[i].product +
                             bundleTrigger + "</span>" +
                             "<br>" + "<svg id='" + historyData.purchases[i].platform + "Icon'></svg><span id='" +
                             historyData.purchases[i].platform + "'>" + historyData
