@@ -105,8 +105,17 @@
 
         .extraData {
             font-size: 18px;
+            text-transform: uppercase;
             letter-spacing: 2px;
             color: #F1FA8C;
+            margin-top: -10px;
+        }
+
+        .extraDataDate {
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #BD93F9;
             margin-top: -10px;
         }
 
@@ -217,7 +226,7 @@
             <p class="heading">sales today</p>
             <p class="bigNumbers" style="font-weight: 600;" id="sales"></p>
             <p class="headingSmall">yesterday</p>
-            <p class="extraData" style="font-weight: 600;"  id="yesterdaySales"></p>
+            <p class="extraData" style="font-weight: 600;" id="yesterdaySales"></p>
 
             <hr>
             <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trophy"
@@ -282,6 +291,8 @@
                 </svg></p>
             <p class="heading">sales this month</p>
             <p class="bigNumbers" id="salesMonth"></p>
+            <p class="headingSmall">payout date</p>
+            <p class="extraDataDate" id="payoutDate"></p>
             <p class="headingSmall">last month</p>
             <p class="extraData" id="lastMonthSales"></p>
             <hr>
@@ -432,11 +443,13 @@
                 let lastMonthAmount = monthData.previousPayout.amount || 0;
                 let totalPurchases;
                 let totalIncome;
+                let payoutDate;
 
 
                 if (thisMonthAmount != undefined) {
                     totalPurchases = monthData.totalPurchases || 0;
                     totalIncome = monthData.totalIncome || 0;
+                    payoutDate = monthData.nextPayout.date || 0;
 
                     if (localStorage.getItem("lastTotal") < totalIncome && localStorage.getItem("lastTotal") !==
                         null) {
@@ -468,6 +481,36 @@
                     document.getElementById("totalIncome").innerHTML = "$" + totalIncome.toFixed(2).toString()
                         .replace(
                             /\B(?=(\d{3})+(?!\d))/g, ",");
+
+                    let newDate = payoutDate.substr(8, 2);
+                    let newMonth = payoutDate.substr(5, 2);
+                    if (newMonth === "01") {
+                        newMonth = "Jan";
+                    } else if (newMonth === "02") {
+                        newMonth = "Feb";
+                    } else if (newMonth === "03") {
+                        newMonth = "Mar";
+                    } else if (newMonth === "04") {
+                        newMonth = "Apr";
+                    } else if (newMonth === "05") {
+                        newMonth = "May";
+                    } else if (newMonth === "06") {
+                        newMonth = "Jun";
+                    } else if (newMonth === "07") {
+                        newMonth = "Jul";
+                    } else if (newMonth === "08") {
+                        newMonth = "Aug";
+                    } else if (newMonth === "09") {
+                        newMonth = "Sep";
+                    } else if (newMonth === "10") {
+                        newMonth = "Oct";
+                    } else if (newMonth === "11") {
+                        newMonth = "Nov";
+                    } else if (newMonth === "12") {
+                        newMonth = "Dec";
+                    }
+
+                    document.getElementById("payoutDate").innerHTML = newMonth + " " + newDate;
 
 
                 } else {
@@ -522,7 +565,8 @@
                         }
                         historyName = historyName + "<span id='saleTime'>" + h + f.substr(2, 3) + " " + ampm +
                             "&nbsp;" +
-                            "</span><span id='saleDate'> " + j + " &#8212; " + "<span style='color:#CCC;'>" + countryName +
+                            "</span><span id='saleDate'> " + j + " &#8212; " + "<span style='color:#CCC;'>" +
+                            countryName +
                             "</span></span><br>" + "<span id='productName'>" + historyData.purchases[i].product +
                             bundleTrigger + "</span>" +
                             "<br>" + "<svg id='" + historyData.purchases[i].platform + "Icon'></svg><span id='" +
