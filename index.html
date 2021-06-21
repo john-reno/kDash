@@ -214,6 +214,7 @@
 <body>
     <p id="saleStore"></p>
     <p class="headingSmall" id="lastSale"></p>
+    <p class="headingSmall" id="lastRefresh"></p>
     <hr>
     <div class="container">
         <div class="container-child">
@@ -511,8 +512,6 @@
                     }
 
                     document.getElementById("payoutDate").innerHTML = newMonth + " " + newDate;
-
-
                 } else {
                     document.getElementById("salesMonth").innerHTML = "$0.00";
                     document.getElementById("lastMonthSales").innerHTML = "$0.00";
@@ -590,9 +589,17 @@
                     }
                     let h = H % 12 || 12;
                     let j = d.toString().substring(4, 10);
+                    let lastRefreshTime = new Date();
+                    let lastRefreshDate = lastRefreshTime.toString().substr(4, 6);
                     document.getElementById("lastSale").innerHTML = "last sale &#8212; " + "<span id='saleTime'>" +
                         h + f
-                        .substr(2, 3) + " " + ampm + "&nbsp;" + "</span><span id='saleDate'> " + j;
+                        .substr(2, 3) + " " + ampm + "&nbsp;" + "</span><span id='saleDate'> " + j + "</span>" +
+                        "<span style='float:right; display:inline-block;padding-right:20px;'>&nbsp;&nbsp;&nbsp;&nbsp;refreshed — <span id='saleTime'>" +
+                        lastRefreshTime.toLocaleString('en-US', {
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
+                        }) + "</span> <span id='saleDate'>&nbsp;" + lastRefreshDate + "</span></span>";
                 }
             })
     } else {
