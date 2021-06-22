@@ -569,9 +569,8 @@
                             "</span></span><br>" + "<span id='productName'>" + historyData.purchases[i].product +
                             bundleTrigger + "</span>" +
                             "<br>" + "<svg id='" + historyData.purchases[i].platform + "Icon'></svg><span id='" +
-                            historyData.purchases[i].platform + "'>" + historyData
-                            .purchases[i].device.replace(
-                                /\s*\(.*?\)\s*/g, '') +
+                            historyData.purchases[i].platform + "'>" + historyData.purchases[i].device.replace(
+                                /\s*\(.*?\)\s*/g, '').replace(/(.{31})..+/, "$1&hellip;") +
                             "</span>" +
                             "<br><hr>";
                         document.getElementById("history").innerHTML = historyName + "<br>";
