@@ -357,11 +357,11 @@
                     document.getElementById("rank").innerHTML = "";
                     document.getElementById("numberToday").innerHTML = "";
                 } else {
-                    document.getElementById("sales").innerHTML = "$" + todayAmount.toFixed(2).toString().replace(
+                    document.getElementById("sales").innerHTML = todayAmount.toFixed(2).toString().replace(
                         /\B(?=(\d{3})+(?!\d))/g, ",");
                     document.getElementById("rank").innerHTML = todayRank;
                     document.getElementById("numberToday").innerHTML = numberToday;
-                    document.getElementById("average").innerHTML = "$" + averagePrice.toFixed(2);
+                    document.getElementById("average").innerHTML = averagePrice.toFixed(2);
                 }
             })
 
@@ -378,7 +378,7 @@
                     document.getElementById("fitbitSales").innerHTML = "";
                 } else {
                     document.getElementById("fitbitSales").innerHTML =
-                        "<svg id='FitbitIcon' style='width:16px;height:16px'></svg>$" + fitbitSales.toFixed(2)
+                        "<svg id='FitbitIcon' style='width:16px;height:16px'></svg>" + fitbitSales.toFixed(2)
                         .toString()
                         .replace(
                             /\B(?=(\d{3})+(?!\d))/g, ",") + " — " + fitbitRank;
@@ -401,7 +401,7 @@
                     document.getElementById("garminPurchases").innerHTML = "";
                 } else {
                     document.getElementById("garminSales").innerHTML =
-                        "<svg id='GarminIcon' style='width:14px;height:14px'></svg>$" + garminSales.toFixed(2)
+                        "<svg id='GarminIcon' style='width:14px;height:14px'></svg>" + garminSales.toFixed(2)
                         .toString()
                         .replace(
                             /\B(?=(\d{3})+(?!\d))/g, ",") + " — " + garminRank;
@@ -426,12 +426,12 @@
                     document.getElementById("yesterdayRank").innerHTML = "";
                     document.getElementById("numberYesterday").innerHTML = "";
                 } else {
-                    document.getElementById("yesterdaySales").innerHTML = "$" + yesterdayAmount.toFixed(2)
+                    document.getElementById("yesterdaySales").innerHTML = yesterdayAmount.toFixed(2)
                         .toString().replace(
                             /\B(?=(\d{3})+(?!\d))/g, ",");
                     document.getElementById("yesterdayRank").innerHTML = yesterdayRank;
                     document.getElementById("numberYesterday").innerHTML = numberYesterday;
-                    document.getElementById("yesterdayAveragePrice").innerHTML = "$" + yesterdayAveragePrice
+                    document.getElementById("yesterdayAveragePrice").innerHTML = yesterdayAveragePrice
                         .toFixed(2);
                 }
             })
@@ -454,7 +454,7 @@
 
                     if (localStorage.getItem("lastTotal") < totalIncome && localStorage.getItem("lastTotal") !==
                         null) {
-                        newTotal = "+ $" + (totalIncome - localStorage.getItem("lastTotal")).toFixed(2).toString()
+                        newTotal = "▲ " + (totalIncome - localStorage.getItem("lastTotal")).toFixed(2).toString()
                             .replace(
                                 /\B(?=(\d{3})+(?!\d))/g, ",");
                         document.getElementById("saleStore").innerHTML = "<span class='saleIncrease'>" + newTotal +
@@ -463,7 +463,7 @@
 
                     localStorage.setItem("lastTotal", totalIncome);
 
-                    if (monthData.currentBalance  === monthData.nextPayout.amount) {
+                    if (thisMonthAmount === lastMonthAmount) {
                         thisMonthAmount = monthData.nextPayout.amount || 0;
                         lastMonthAmount = monthData.previousPayout.amount || 0;
                     } else {
@@ -471,15 +471,15 @@
                         lastMonthAmount = monthData.nextPayout.amount || 0;
                     }
 
-                    document.getElementById("salesMonth").innerHTML = "$" + thisMonthAmount.toFixed(2).toString()
+                    document.getElementById("salesMonth").innerHTML = thisMonthAmount.toFixed(2).toString()
                         .replace(
                             /\B(?=(\d{3})+(?!\d))/g, ",");
-                    document.getElementById("lastMonthSales").innerHTML = "$" + lastMonthAmount.toFixed(2)
+                    document.getElementById("lastMonthSales").innerHTML = lastMonthAmount.toFixed(2)
                         .toString().replace(
                             /\B(?=(\d{3})+(?!\d))/g, ",");
                     document.getElementById("totalPurchases").innerHTML = totalPurchases.toString().replace(
                         /\B(?=(\d{3})+(?!\d))/g, ",");;
-                    document.getElementById("totalIncome").innerHTML = "$" + totalIncome.toFixed(2).toString()
+                    document.getElementById("totalIncome").innerHTML = totalIncome.toFixed(2).toString()
                         .replace(
                             /\B(?=(\d{3})+(?!\d))/g, ",");
 
@@ -513,9 +513,9 @@
 
                     document.getElementById("payoutDate").innerHTML = newMonth + " " + newDate;
                 } else {
-                    document.getElementById("salesMonth").innerHTML = "$0.00";
-                    document.getElementById("lastMonthSales").innerHTML = "$0.00";
-                    document.getElementById("totalIncome").innerHTML = "$0.00";
+                    document.getElementById("salesMonth").innerHTML = "0.00";
+                    document.getElementById("lastMonthSales").innerHTML = "0.00";
+                    document.getElementById("totalIncome").innerHTML = "0.00";
                     document.getElementById("totalPurchases").innerHTML = "0";
                 }
             })
