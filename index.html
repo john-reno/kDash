@@ -463,7 +463,7 @@
 
                     localStorage.setItem("lastTotal", totalIncome);
 
-                    if (thisMonthAmount === lastMonthAmount) {
+                    if (monthData.currentBalance === monthData.nextPayout.amount) {
                         thisMonthAmount = monthData.nextPayout.amount || 0;
                         lastMonthAmount = monthData.previousPayout.amount || 0;
                     } else {
