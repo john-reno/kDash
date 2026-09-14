@@ -865,8 +865,8 @@
                         <p class="v" id="salesMonth">0.00</p>
                     </div>
                     <div>
-                        <p class="label">Cut off</p>
-                        <p class="v date" id="cutoffDate">—</p>
+                        <p class="label">Next cut off</p>
+                        <p class="v date" id="nextCutoffDate">—</p>
                     </div>
                     <div>
                         <p class="label">Payout</p>
@@ -1066,10 +1066,10 @@
                 $('totalPurchases').textContent = count(s.totalPurchases);
 
                 var payout = isoDate(next.date);
-                var cutoff = isoDate((next.purchases || {}).periodEnd);
-                if (!cutoff && payout) cutoff = new Date(payout.getTime() - 14 * 86400000);
+                var nextCutoff = isoDate((next.purchases || {}).periodEnd);
+                if (!nextCutoff && payout) nextCutoff = new Date(payout.getTime() - 14 * 86400000);
                 $('payoutDate').textContent = dayLabel(payout);
-                $('cutoffDate').textContent = dayLabel(cutoff);
+                $('nextCutoffDate').textContent = dayLabel(nextCutoff);
 
                 checkDelta(Number(s.totalIncome || 0));
             }
