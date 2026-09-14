@@ -865,6 +865,10 @@
                         <p class="v" id="salesMonth">0.00</p>
                     </div>
                     <div>
+                        <p class="label">Cut off</p>
+                        <p class="v date" id="cutoffDate">—</p>
+                    </div>
+                    <div>
                         <p class="label">Payout</p>
                         <p class="v date" id="payoutDate">—</p>
                     </div>
@@ -1061,13 +1065,23 @@
                 $('totalIncome').textContent = money(s.totalIncome);
                 $('totalPurchases').textContent = count(s.totalPurchases);
 
-                var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(next.date || ''));
-                $('payoutDate').textContent = m
-                    ? new Date(Date.UTC(+m[1], +m[2] - 1, +m[3])).toLocaleDateString('en-US',
-                        { month: 'short', day: 'numeric', timeZone: 'UTC' })
-                    : '—';
+                var payout = isoDate(next.date);
+                var cutoff = isoDate((next.purchases || {}).periodEnd);
+                if (!cutoff && payout) cutoff = new Date(payout.getTime() - 14 * 86400000);
+                $('payoutDate').textContent = dayLabel(payout);
+                $('cutoffDate').textContent = dayLabel(cutoff);
 
                 checkDelta(Number(s.totalIncome || 0));
+            }
+
+            function isoDate(v) {
+                var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(v || ''));
+                return m ? new Date(Date.UTC(+m[1], +m[2] - 1, +m[3])) : null;
+            }
+
+            function dayLabel(d) {
+                return d ? d.toLocaleDateString('en-US',
+                    { month: 'short', day: 'numeric', timeZone: 'UTC' }) : '—';
             }
 
             function renderHistory() {
