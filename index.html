@@ -1159,30 +1159,18 @@
                 return s;
             }
 
-            var seenTimer = null;
-
             function checkDelta(total) {
                 var seen = parseFloat(read(SEEN_STORE));
-                if (!isFinite(seen)) { write(SEEN_STORE, total); return; }
-                var gain = total - seen;
+                write(SEEN_STORE, total);
+                if (!isFinite(seen)) return;
                 var pill = $('delta');
+                var gain = total - seen;
                 if (gain > 0.004) {
                     pill.textContent = '▲ ' + money(gain);
                     pill.hidden = false;
-                    armSeen(total);
                 } else {
                     pill.hidden = true;
-                    write(SEEN_STORE, total);
                 }
-            }
-
-            function armSeen(total) {
-                clearTimeout(seenTimer);
-                if (document.visibilityState !== 'visible') return;
-                seenTimer = setTimeout(function () {
-                    write(SEEN_STORE, total);
-                    $('delta').hidden = true;
-                }, 7000);
             }
 
             function status(text, bad) {
@@ -1395,9 +1383,8 @@
                 live = true;
                 setInterval(function () { refresh(false); }, POLL_MS);
                 document.addEventListener('visibilitychange', function () {
-                    if (document.visibilityState !== 'visible') { clearTimeout(seenTimer); return; }
+                    if (document.visibilityState !== 'visible') return;
                     refresh(false);
-                    if (!$('delta').hidden && state.summary) armSeen(Number(state.summary.totalIncome || 0));
                 });
             }
 
