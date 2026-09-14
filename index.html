@@ -1069,9 +1069,28 @@
                 var nextCutoff = isoDate((next.purchases || {}).periodEnd);
                 if (!nextCutoff && payout) nextCutoff = new Date(payout.getTime() - 14 * 86400000);
                 $('payoutDate').textContent = dayLabel(payout);
-                $('nextCutoffDate').textContent = dayLabel(nextCutoff);
+                $('nextCutoffDate').textContent = dayLabel(rollForward(nextCutoff, cycleDays(next, prev)));
 
                 checkDelta(Number(s.totalIncome || 0));
+            }
+
+            function cycleDays(next, prev) {
+                var a = isoDate((prev.purchases || {}).periodEnd);
+                var b = isoDate((next.purchases || {}).periodEnd);
+                var days = (a && b) ? Math.round((b - a) / 86400000) : 0;
+                return days > 0 ? days : 28;
+            }
+
+            function rollForward(d, step) {
+                if (!d) return d;
+                var n = new Date();
+                var today = Date.UTC(n.getFullYear(), n.getMonth(), n.getDate());
+                var out = new Date(d.getTime());
+                var guard = 0;
+                while (out.getTime() < today && guard++ < 400) {
+                    out = new Date(out.getTime() + step * 86400000);
+                }
+                return out;
             }
 
             function isoDate(v) {
