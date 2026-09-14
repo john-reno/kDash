@@ -1,609 +1,1418 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
     <meta name="robots" content="noindex">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#1b1d25" />
+    <title>k-pay sales</title>
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231b1d25'/%3E%3Ccircle cx='12' cy='16' r='4' fill='%235bcdb9'/%3E%3Ccircle cx='21' cy='16' r='4' fill='%2345a3fc'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        html,
+        :root {
+            --bg: #1b1d25;
+            --surface: #212430;
+            --line: rgba(98, 114, 164, .20);
+            --line-soft: rgba(98, 114, 164, .10);
+            --hero: #f8f8f2;
+            --text: #ccc;
+            --muted: #6272a4;
+            --purple: #bd93f9;
+            --yellow: #f1fa8c;
+            --green: #50fa7b;
+            --red: #ff6e6e;
+            --fitbit: #5bcdb9;
+            --garmin: #45a3fc;
+
+            --pad: clamp(18px, 4vw, 34px);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        html {
+            background: var(--bg);
+            -webkit-text-size-adjust: 100%;
+        }
+
         body {
-            background: #1b1d25;
-            overflow-x: hidden;
-            max-width: 100%;
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Rubik', system-ui, -apple-system, sans-serif;
+            font-size: 16px;
+            line-height: 1.4;
+            padding:
+                calc(env(safe-area-inset-top) + 6px) calc(env(safe-area-inset-right) + var(--pad)) calc(env(safe-area-inset-bottom) + 48px) calc(env(safe-area-inset-left) + var(--pad));
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrap {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .num {
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: "tnum" 1;
+        }
+
+        .label {
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: .16em;
+            color: var(--muted);
             margin: 0;
         }
 
-        .container {
+        header {
             display: flex;
-            flex-flow: row wrap;
-            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 4px 0 13px;
+            border-bottom: 1px solid var(--line);
+            flex-wrap: wrap;
         }
 
-        .container-child {
-            flex-grow: 1;
-            flex-shrink: 0;
+        .meta {
+            font-size: 11px;
+            letter-spacing: .04em;
+            color: var(--muted);
+            white-space: nowrap;
         }
 
-        svg {
-            width: 40px;
-            height: 40px;
-            color: #6272A4;
-        }
-
-        #FitbitIcon {
-            width: 12px;
-            height: 12px;
-            padding-right: 12px;
-            margin-bottom: -2px;
-            background-image: url("data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS4zNzAzIDIxLjI5ODEiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojNWJjZGI5O308L3N0eWxlPjwvZGVmcz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xMS44NCwxLjU4ODNhMS41ODg0LDEuNTg4NCwwLDEsMS0zLjE3NjcsMCwxLjU4ODQsMS41ODg0LDAsMCwxLDMuMTc2NywwWk0xMC4yNTIsNC40NzYyYTEuNjYwNiwxLjY2MDYsMCwxLDAsMS42NiwxLjY2QTEuNjMzOCwxLjYzMzgsMCwwLDAsMTAuMjUyLDQuNDc2MlptMCw0LjQ3NjJhMS43MzI4LDEuNzMyOCwwLDEsMCwxLjczMjcsMS43MzI4QTEuNzU2OSwxLjc1NjksMCwwLDAsMTAuMjUyLDguOTUyNFptMCw0LjU0ODRhMS42NjA2LDEuNjYwNiwwLDEsMCwxLjY2LDEuNjYwNkExLjY3OTQsMS42Nzk0LDAsMCwwLDEwLjI1MiwxMy41MDA4Wm0wLDQuNjIwN0ExLjU4ODMsMS41ODgzLDAsMSwwLDExLjg0LDE5LjcxLDEuNjAyNCwxLjYwMjQsMCwwLDAsMTAuMjUyLDE4LjEyMTVaTTE0LjY1Niw0LjI2YTEuOTExMywxLjkxMTMsMCwwLDAtMS44NzcxLDEuODc3MSwxLjg3NzEsMS44NzcxLDAsMSwwLDMuNzU0MiwwQTEuOTExMywxLjkxMTMsMCwwLDAsMTQuNjU2LDQuMjZabTAsNC40NzYyYTEuOTQ5NCwxLjk0OTQsMCwxLDAsMS45NDkzLDEuOTQ5NEExLjk0MTIsMS45NDEyLDAsMCwwLDE0LjY1Niw4LjczNThabTAsNC41NDg1YTEuODc3MSwxLjg3NzEsMCwxLDAsMS44NzcxLDEuODc3MUExLjkxMTMsMS45MTEzLDAsMCwwLDE0LjY1NiwxMy4yODQzWm00LjU0ODQtNC43NjUxYTIuMTY2LDIuMTY2LDAsMCwwLDAsNC4zMzE5QTIuMTI3MiwyLjEyNzIsMCwwLDAsMjEuMzcsMTAuNjg1MiwyLjIyLDIuMjIsMCwwLDAsMTkuMjA0NCw4LjUxOTJaTTUuNzc1OCw0LjY5MjhBMS40NDQsMS40NDQsMCwxLDAsNy4yMiw2LjEzNjcsMS40NDgyLDEuNDQ4MiwwLDAsMCw1Ljc3NTgsNC42OTI4Wm0wLDQuNDc2MmExLjUxNjIsMS41MTYyLDAsMSwwLDAsMy4wMzIzLDEuNTE2MiwxLjUxNjIsMCwwLDAsMC0zLjAzMjNabTAsNC41NDg0QTEuNDQ0LDEuNDQ0LDAsMSwwLDcuMjIsMTUuMTYxNCwxLjQ0ODIsMS40NDgyLDAsMCwwLDUuNzc1OCwxMy43MTc0Wk0xLjMsOS4zODU2YTEuMywxLjMsMCwxLDAsMS4zLDEuM0ExLjI5NDIsMS4yOTQyLDAsMCwwLDEuMyw5LjM4NTZaIi8+PC9zdmc+");
-            background-repeat: no-repeat;
-            color: #6272A4;
-        }
-
-        #GarminIcon {
-            width: 11px;
-            height: 11px;
-            padding-right: 14px;
-            margin-bottom: -1px;
-            background-image: url("data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS4zNzAzIDE4Ljk2NDUiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojNDVhM2ZjO2ZpbGwtcnVsZTpldmVub2RkO308L3N0eWxlPjwvZGVmcz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xOS41ODYzLDIwLjEzMTMsMS43ODM1LDIwLjEzMDZhMS43MzYzLDEuNzM2MywwLDAsMS0xLjUzOTEtLjg5LDEuNzM0NSwxLjczNDUsMCwwLDEsLjAwMDctMS43NzY3bDguOTAyMS0xNS40MWExLjc3NjgsMS43NzY4LDAsMCwxLDMuMDc2NywwbDguOTAwOCwxNS40MWExLjc3NzEsMS43NzcxLDAsMCwxLTEuNTM4NCwyLjY2NjRaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIC0xLjE2NjgpIi8+PC9zdmc+");
-            background-repeat: no-repeat;
-            color: #6272A4;
-        }
-
-        p {
-            color: #CCC;
-            font-size: 35px;
-            font-family: 'Rubik', sans-serif;
-            text-align: left;
-            letter-spacing: 2px;
-            margin: 20px 0 20px 30px;
-        }
-
-        hr {
-            border: 1px solid white;
-            opacity: 0.2;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        .bigNumbers {
-            margin-top: -10px;
-        }
-
-        .heading {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #6272A4;
-        }
-
-        .headingSmall {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #6272A4;
-        }
-
-        #saleTime {
-            font-size: 12px;
-            letter-spacing: 2px;
-            color: #BD93F9;
+        .meta b {
             font-weight: 600;
+            color: var(--purple);
+            font-variant-numeric: tabular-nums;
         }
 
-        #saleDate {
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #6272A4;
+        .checked {
+            margin-right: auto;
         }
 
-        .extraData {
-            font-size: 18px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #F1FA8C;
-            margin-top: -10px;
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--purple);
+            display: inline-block;
+            margin-right: 9px;
+            vertical-align: 1px;
+            transition: background .3s;
         }
 
-        .extraDataDate {
-            font-size: 18px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #BD93F9;
-            margin-top: -10px;
+        body.is-busy .dot {
+            background: var(--muted);
         }
 
-        .extraDataFitbit {
-            font-size: 18px;
-            letter-spacing: 2px;
-            margin-top: -10px;
-            color: #5bcdb9;
+        .tools {
+            display: flex;
+            gap: 2px;
+            margin: -9px -11px -9px 0;
         }
 
-        .extraDataGarmin {
-            font-size: 18px;
-            letter-spacing: 2px;
-            margin-top: -10px;
-            color: #45a3fc;
+        .icobtn {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            background: none;
+            border: 0;
+            border-radius: 8px;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 0;
         }
 
-        .saleIncrease {
-            font-size: 20px;
-            letter-spacing: 1px;
-            color: #1b1d25;
-            background-color: #50FA7B;
-            padding: 8px 12px 8px 12px;
-            border-radius: 100px;
-            font-weight: 600;
+        .icobtn:hover {
+            color: var(--text);
+            background: var(--line-soft);
         }
 
-        #saleStore {
-            margin-top: 10px;
+        .icobtn svg {
+            width: 21px;
+            height: 21px;
         }
 
-        #history {
-            line-height: 18px;
-            margin-top: -15px;
+        body.is-busy #refreshBtn svg {
+            animation: spin 1s linear infinite;
         }
 
-        #productName {
-            font-size: 18px;
-            letter-spacing: 1px;
-            line-height: 26px;
-        }
-
-        #Fitbit {
-            font-size: 12px;
-            color: #5bcdb9;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        #Garmin {
-            font-size: 12px;
-            color: #45a3fc;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        hr {
-            border-top: 0px solid white;
-            opacity: 0.05;
-        }
-
-        input {
-            height: 20px;
-            bottom: 0;
-            right: 0;
-            position: fixed;
-            margin: 0 3px 0 0;
-            text-align: right;
-            background-color: rgba(0, 0, 0, 0);
-            border: none;
-            color: #48494F;
-            width: 100%;
-            font-size: 10px;
-            font-family: 'Rubik', sans-serif;
-            outline-width: 1;
-        }
-
-        ::placeholder {
-            color: white;
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         @media (max-width: 700px) {
-            .container-child {
-                width: 48vw;
+            .lastsale {
+                order: 3;
+                width: 100%;
+                margin-top: 3px;
             }
 
+            .tools {
+                order: 2;
+            }
+        }
+
+        #status {
+            margin: 12px 0 0;
+            font-size: 12px;
+            letter-spacing: .03em;
+            color: var(--yellow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #status.bad {
+            color: var(--red);
+        }
+
+        #status button {
+            font: inherit;
+            background: none;
+            border: 0;
+            border-bottom: 1px solid currentColor;
+            color: inherit;
+            padding: 0 0 1px;
+            cursor: pointer;
+        }
+
+        main {
+            display: grid;
+            gap: 0 clamp(28px, 4.5vw, 58px);
+            grid-template-columns: minmax(0, 1.22fr) minmax(0, .78fr);
+            grid-template-rows: auto 1fr;
+            grid-template-areas:
+                "col    feed"
+                "ledger feed";
+            align-items: start;
+        }
+
+        @media (max-width: 880px) {
+            main {
+                grid-template-columns: minmax(0, 1fr);
+                grid-template-areas: "col" "feed" "ledger";
+            }
+        }
+
+        @media (min-width: 881px) {
             body {
-                zoom: 70%;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                padding-block: 26px;
+            }
+
+            .wrap {
+                margin: auto;
+                width: 100%;
+            }
+
+            #empty {
+                padding-top: 0;
+            }
+        }
+
+        section {
+            min-width: 0;
+        }
+
+        .col {
+            grid-area: col;
+            min-width: 0;
+        }
+
+        .today {
+            padding: 30px 0 4px;
+        }
+
+        .feed {
+            grid-area: feed;
+            padding-top: 30px;
+        }
+
+        .ledger {
+            grid-area: ledger;
+            align-self: start;
+        }
+
+        @media (max-width: 880px) {
+            .feed {
+                margin-top: 24px;
+                padding-top: 20px;
+                border-top: 1px solid var(--line);
+            }
+        }
+
+        .rule {
+            border-top: 1px solid var(--line);
+            padding-top: 20px;
+            margin-top: 24px;
+        }
+
+        .herorow {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin: 6px 0 0;
+        }
+
+        #today {
+            font-size: clamp(52px, 11vw, 78px);
+            line-height: .95;
+            font-weight: 600;
+            letter-spacing: -.02em;
+            color: var(--hero);
+        }
+
+        #delta {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: .02em;
+            color: #1b1d25;
+            background: var(--green);
+            border-radius: 100px;
+            padding: 5px 13px;
+            white-space: nowrap;
+        }
+
+        .compare {
+            margin: 16px 0 0;
+            font-size: 13px;
+            letter-spacing: .03em;
+            color: var(--muted);
+            display: flex;
+            gap: 8px;
+            align-items: baseline;
+        }
+
+        .compare b {
+            font-weight: 500;
+            color: var(--yellow);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .trio {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px clamp(16px, 3vw, 34px);
+        }
+
+        .stat .v {
+            font-size: clamp(24px, 4vw, 30px);
+            font-weight: 500;
+            color: var(--hero);
+            line-height: 1.15;
+            margin: 7px 0 0;
+        }
+
+        .stat .v .pre {
+            color: var(--muted);
+            font-weight: 400;
+            font-size: .62em;
+            margin-right: 1px;
+        }
+
+        .stat .y {
+            font-size: 12px;
+            color: var(--muted);
+            letter-spacing: .03em;
+            margin: 5px 0 0;
+        }
+
+        .stat .y b {
+            font-weight: 500;
+            color: var(--yellow);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .splitgrid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            align-items: center;
+            column-gap: clamp(16px, 3vw, 34px);
+            row-gap: 13px;
+            margin-top: 14px;
+        }
+
+        .splitgrid .pair {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: clamp(16px, 3vw, 34px);
+            align-items: center;
+        }
+
+        .splitgrid .colhead {
+            font-size: 9px;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding-bottom: 2px;
+        }
+
+        .platname {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        .splitgrid .n {
+            font-size: 18px;
+            font-weight: 500;
+            font-variant-numeric: tabular-nums;
+            color: var(--text);
+        }
+
+        .splitgrid .n .pre {
+            color: var(--muted);
+            font-size: .7em;
+            font-weight: 400;
+        }
+
+        .fitbit {
+            color: var(--fitbit);
+        }
+
+        .garmin {
+            color: var(--garmin);
+        }
+
+        .mark {
+            width: 14px;
+            height: 14px;
+            flex: none;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+
+        .mark.fitbit {
+            background-image: url("data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS4zNzAzIDIxLjI5ODEiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojNWJjZGI5O308L3N0eWxlPjwvZGVmcz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xMS44NCwxLjU4ODNhMS41ODg0LDEuNTg4NCwwLDEsMS0zLjE3NjcsMCwxLjU4ODQsMS41ODg0LDAsMCwxLDMuMTc2NywwWk0xMC4yNTIsNC40NzYyYTEuNjYwNiwxLjY2MDYsMCwxLDAsMS42NiwxLjY2QTEuNjMzOCwxLjYzMzgsMCwwLDAsMTAuMjUyLDQuNDc2MlptMCw0LjQ3NjJhMS43MzI4LDEuNzMyOCwwLDEsMCwxLjczMjcsMS43MzI4QTEuNzU2OSwxLjc1NjksMCwwLDAsMTAuMjUyLDguOTUyNFptMCw0LjU0ODRhMS42NjA2LDEuNjYwNiwwLDEsMCwxLjY2LDEuNjYwNkExLjY3OTQsMS42Nzk0LDAsMCwwLDEwLjI1MiwxMy41MDA4Wm0wLDQuNjIwN0ExLjU4ODMsMS41ODgzLDAsMSwwLDExLjg0LDE5LjcxLDEuNjAyNCwxLjYwMjQsMCwwLDAsMTAuMjUyLDE4LjEyMTVaTTE0LjY1Niw0LjI2YTEuOTExMywxLjkxMTMsMCwwLDAtMS44NzcxLDEuODc3MSwxLjg3NzEsMS44NzcxLDAsMSwwLDMuNzU0MiwwQTEuOTExMywxLjkxMTMsMCwwLDAsMTQuNjU2LDQuMjZabTAsNC40NzYyYTEuOTQ5NCwxLjk0OTQsMCwxLDAsMS45NDkzLDEuOTQ5NEExLjk0MTIsMS45NDEyLDAsMCwwLDE0LjY1Niw4LjczNThabTAsNC41NDg1YTEuODc3MSwxLjg3NzEsMCwxLDAsMS44NzcxLDEuODc3MUExLjkxMTMsMS45MTEzLDAsMCwwLDE0LjY1NiwxMy4yODQzWm00LjU0ODQtNC43NjUxYTIuMTY2LDIuMTY2LDAsMCwwLDAsNC4zMzE5QTIuMTI3MiwyLjEyNzIsMCwwLDAsMjEuMzcsMTAuNjg1MiwyLjIyLDIuMjIsMCwwLDAsMTkuMjA0NCw4LjUxOTJaTTUuNzc1OCw0LjY5MjhBMS40NDQsMS40NDQsMCwxLDAsNy4yMiw2LjEzNjcsMS40NDgyLDEuNDQ4MiwwLDAsMCw1Ljc3NTgsNC42OTI4Wm0wLDQuNDc2MmExLjUxNjIsMS41MTYyLDAsMSwwLDAsMy4wMzIzLDEuNTE2MiwxLjUxNjIsMCwwLDAsMC0zLjAzMjNabTAsNC41NDg0QTEuNDQ0LDEuNDQ0LDAsMSwwLDcuMjIsMTUuMTYxNCwxLjQ0ODIsMS40NDgyLDAsMCwwLDUuNzc1OCwxMy43MTc0Wk0xLjMsOS4zODU2YTEuMywxLjMsMCwxLDAsMS4zLDEuM0ExLjI5NDIsMS4yOTQyLDAsMCwwLDEuMyw5LjM4NTZaIi8+PC9zdmc+");
+        }
+
+        .mark.garmin {
+            background-image: url("data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS4zNzAzIDE4Ljk2NDUiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojNDVhM2ZjO2ZpbGwtcnVsZTpldmVub2RkO308L3N0eWxlPjwvZGVmcz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xOS41ODYzLDIwLjEzMTMsMS43ODM1LDIwLjEzMDZhMS43MzYzLDEuNzM2MywwLDAsMS0xLjUzOTEtLjg5LDEuNzM0NSwxLjczNDUsMCwwLDEsLjAwMDctMS43NzY3bDguOTAyMS0xNS40MWExLjc3NjgsMS43NzY4LDAsMCwxLDMuMDc2NywwbDguOTAwOCwxNS40MWExLjc3NzEsMS43NzcxLDAsMCwxLTEuNTM4NCwyLjY2NjRaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIC0xLjE2NjgpIi8+PC9zdmc+");
+        }
+
+        #history {
+            margin: 16px 0 0;
+            list-style: none;
+            padding: 0;
+        }
+
+        #history li {
+            border-left: 2px solid var(--line);
+            padding: 0 0 0 16px;
+            margin-bottom: 22px;
+        }
+
+        #history li:last-child {
+            margin-bottom: 14px;
+        }
+
+        #history li.fb {
+            border-left-color: var(--fitbit);
+        }
+
+        #history li.gm {
+            border-left-color: var(--garmin);
+        }
+
+        .saleline {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            font-size: 11px;
+            letter-spacing: .06em;
+        }
+
+        .saletime {
+            font-weight: 600;
+            color: var(--purple);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .saledate {
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .country {
+            margin-left: auto;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+        .product {
+            font-size: 15px;
+            letter-spacing: .01em;
+            margin: 5px 0 3px;
+            color: var(--text);
+        }
+
+        .product .bundle {
+            color: var(--muted);
+        }
+
+        .device {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: .09em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .feedfoot {
+            border-top: 1px solid var(--line);
+            margin-top: 8px;
+            padding-top: 8px;
+        }
+
+        .pager {
+            display: flex;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .pager button {
+            font: inherit;
+            font-size: 12.5px;
+            font-weight: 500;
+            letter-spacing: .04em;
+            font-variant-numeric: tabular-nums;
+            height: 34px;
+            padding: 0 12px;
+            background: none;
+            border: 0;
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        .pager button:hover {
+            color: var(--text);
+        }
+
+        .pager button[aria-current] {
+            color: var(--hero);
+            font-weight: 600;
+        }
+
+        .ledgergrid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px clamp(16px, 3vw, 34px);
+            margin-top: 14px;
+        }
+
+        @media (max-width: 880px) {
+            .ledgergrid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        .ledgergrid .v {
+            font-size: 19px;
+            font-weight: 500;
+            color: var(--text);
+            margin: 6px 0 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .ledgergrid .v.date {
+            color: var(--purple);
+        }
+
+        .ledgergrid .v.second {
+            color: var(--yellow);
+        }
+
+        #empty {
+            padding: 12vh 0 0;
+            max-width: 30ch;
+        }
+
+        #empty h1 {
+            font-size: 26px;
+            font-weight: 500;
+            color: var(--hero);
+            margin: 0 0 10px;
+            letter-spacing: -.01em;
+        }
+
+        #empty p {
+            color: var(--muted);
+            font-size: 14px;
+            margin: 0 0 22px;
+        }
+
+        .btn {
+            font: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: .04em;
+            padding: 10px 18px;
+            border-radius: 100px;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+
+        .btn.primary {
+            background: var(--purple);
+            color: #1b1d25;
+        }
+
+        .btn.primary:hover {
+            background: #cba7fa;
+        }
+
+        .btn.ghost {
+            background: none;
+            border-color: var(--line);
+            color: var(--text);
+        }
+
+        .btn.ghost:hover {
+            border-color: var(--muted);
+        }
+
+        .btn.quiet {
+            background: none;
+            color: var(--muted);
+            padding: 10px 4px;
+        }
+
+        .btn.quiet:hover {
+            color: var(--red);
+        }
+
+        .btn:disabled {
+            opacity: .45;
+            cursor: default;
+        }
+
+        dialog {
+            border: 0;
+            padding: 0;
+            background: none;
+            color: inherit;
+            margin: auto;
+            overflow: visible;
+        }
+
+        dialog::backdrop {
+            background: rgba(14, 15, 20, .76);
+        }
+
+        .panel {
+            width: min(400px, calc(100vw - 32px));
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 24px;
+        }
+
+        .panel h2 {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--hero);
+            margin: 0 0 8px;
+            letter-spacing: -.01em;
+        }
+
+        .panel .note {
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--muted);
+            margin: 0 0 20px;
+        }
+
+        .inputwrap {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 4px;
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            padding: 0 4px 0 12px;
+        }
+
+        .inputwrap:focus-within {
+            border-color: var(--purple);
+        }
+
+        .inputwrap input {
+            flex: 1;
+            min-width: 0;
+            font: inherit;
+            font-size: 14px;
+            letter-spacing: .04em;
+            background: none;
+            border: 0;
+            outline: none;
+            color: var(--hero);
+            padding: 11px 0;
+        }
+
+        .inputwrap input::placeholder {
+            color: var(--muted);
+            letter-spacing: .02em;
+        }
+
+        #revealBtn {
+            flex: none;
+            background: none;
+            border: 0;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 7px;
+            display: grid;
+            place-items: center;
+            border-radius: 7px;
+        }
+
+        #revealBtn:hover {
+            color: var(--text);
+        }
+
+        #revealBtn svg {
+            width: 17px;
+            height: 17px;
+        }
+
+        #revealBtn .slash {
+            display: none;
+        }
+
+        #revealBtn[aria-pressed="true"] .slash {
+            display: block;
+        }
+
+        #keyMsg {
+            font-size: 12.5px;
+            line-height: 1.45;
+            margin: 12px 0 0;
+            min-height: 1.45em;
+            color: var(--muted);
+        }
+
+        #keyMsg.bad {
+            color: var(--red);
+        }
+
+        #keyMsg.good {
+            color: var(--green);
+        }
+
+        .panelrow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .panelrow .spacer {
+            margin-left: auto;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--purple);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before {
+                animation: none !important;
+                transition: none !important;
             }
         }
     </style>
 </head>
 
 <body>
-    <p id="saleStore"></p>
-    <p class="headingSmall" id="lastSale"></p>
-    <p class="headingSmall" id="lastRefresh"></p>
-    <hr>
-    <div class="container">
-        <div class="container-child">
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-smartwatch" viewBox="0 0 16 16">
-                    <path d="M9 5a.5.5 0 0 0-1 0v3H6a.5.5 0 0 0 0 1h2.5a.5.5 0 0 0 .5-.5V5z" />
-                    <path
-                        d="M4 1.667v.383A2.5 2.5 0 0 0 2 4.5v7a2.5 2.5 0 0 0 2 2.45v.383C4 15.253 4.746 16 5.667 16h4.666c.92 0 1.667-.746 1.667-1.667v-.383a2.5 2.5 0 0 0 2-2.45V8h.5a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5H14v-.5a2.5 2.5 0 0 0-2-2.45v-.383C12 .747 11.254 0 10.333 0H5.667C4.747 0 4 .746 4 1.667zM4.5 3h7A1.5 1.5 0 0 1 13 4.5v7a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 3 11.5v-7A1.5 1.5 0 0 1 4.5 3z" />
-                </svg></p>
-            <p class="heading">sales today</p>
-            <p class="bigNumbers" style="font-weight: 600;" id="sales"></p>
-            <p class="headingSmall">yesterday</p>
-            <p class="extraData" style="font-weight: 600;" id="yesterdaySales"></p>
+    <div class="wrap">
+        <header>
+            <span class="meta checked" id="metaChecked" hidden><i class="dot"></i>checked
+                <b id="lastRefresh">—</b></span>
+            <span class="meta lastsale" id="metaSale" hidden>last sale <b id="lastSale">—</b></span>
+            <div class="tools" id="tools" hidden>
+                <button class="icobtn" id="refreshBtn" type="button" title="Refresh now" aria-label="Refresh now">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20.5 12a8.5 8.5 0 1 1-2.5-6" />
+                        <path d="M20.5 3.5V9H15" />
+                    </svg>
+                </button>
+                <button class="icobtn" id="keyBtn" type="button" title="API key" aria-label="API key">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="8" cy="16" r="4.2" />
+                        <path d="M11 13 20 4" />
+                        <path d="M17.5 6.5 20 9" />
+                    </svg>
+                </button>
+            </div>
+        </header>
 
-            <hr>
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trophy"
-                    viewBox="0 0 16 16">
-                    <path
-                        d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5c0 .538-.012 1.05-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.132-5.89A33.076 33.076 0 0 1 2.5.5zm.099 2.54a2 2 0 0 0 .72 3.935c-.333-1.05-.588-2.346-.72-3.935zm10.083 3.935a2 2 0 0 0 .72-3.935c-.133 1.59-.388 2.885-.72 3.935zM3.504 1c.007.517.026 1.006.056 1.469.13 2.028.457 3.546.87 4.667C5.294 9.48 6.484 10 7 10a.5.5 0 0 1 .5.5v2.61a1 1 0 0 1-.757.97l-1.426.356a.5.5 0 0 0-.179.085L4.5 15h7l-.638-.479a.501.501 0 0 0-.18-.085l-1.425-.356a1 1 0 0 1-.757-.97V10.5A.5.5 0 0 1 9 10c.516 0 1.706-.52 2.57-2.864.413-1.12.74-2.64.87-4.667.03-.463.049-.952.056-1.469H3.504z" />
-                </svg></p>
-            <p class="heading">rank today</p>
-            <p class="bigNumbers" id="rank"></p>
-            <p class="headingSmall">yesterday</p>
-            <p class="extraData" id="yesterdayRank"></p>
-            <hr>
-            <p class="headingSmall">fitbit sales + rank</p>
-            <p class="extraDataFitbit" id="fitbitSales"></p>
-            <p class="headingSmall">garmin sales + rank</p>
-            <p class="extraDataGarmin" id="garminSales"></p>
-            <hr>
-        </div>
-        <div class="container-child">
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-percent"
-                    viewBox="0 0 16 16">
-                    <path
-                        d="M13.442 2.558a.625.625 0 0 1 0 .884l-10 10a.625.625 0 1 1-.884-.884l10-10a.625.625 0 0 1 .884 0zM4.5 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm7 6a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm0 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
-                </svg></p>
-            <p class="heading">average price today</p>
-            <p class="bigNumbers" id="average"></p>
-            <p class="headingSmall">yesterday</p>
-            <p class="extraData" id="yesterdayAveragePrice"></p>
-            <hr>
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag"
-                    viewBox="0 0 16 16">
-                    <path
-                        d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
-                </svg></p>
-            <p class="heading">purchases today</p>
-            <p class="bigNumbers" id="numberToday"></p>
-            <p class="headingSmall">yesterday</p>
-            <p class="extraData" id="numberYesterday"></p>
-            <hr>
-            <p class="headingSmall">fitbit purchases</p>
-            <p class="extraDataFitbit" id="fitbitPurchases"></p>
-            <p class="headingSmall">garmin purchases</p>
-            <p class="extraDataGarmin" id="garminPurchases"></p>
-            <hr>
-        </div>
-        <div class="container-child">
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock"
-                    viewBox="0 0 16 16">
-                    <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
-                </svg></p>
-            <p class="heading">recent sales</p>
-            <p id="history"></p>
-        </div>
-        <div class="container-child">
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-calendar3" viewBox="0 0 16 16">
-                    <path
-                        d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" />
-                    <path
-                        d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-                </svg></p>
-            <p class="heading">sales this month</p>
-            <p class="bigNumbers" id="salesMonth"></p>
-            <p class="headingSmall">payout date</p>
-            <p class="extraDataDate" id="payoutDate"></p>
-            <p class="headingSmall">last month</p>
-            <p class="extraData" id="lastMonthSales"></p>
-            <hr>
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-piggy-bank" viewBox="0 0 16 16">
-                    <path
-                        d="M5 6.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm1.138-1.496A6.613 6.613 0 0 1 7.964 4.5c.666 0 1.303.097 1.893.273a.5.5 0 0 0 .286-.958A7.602 7.602 0 0 0 7.964 3.5c-.734 0-1.441.103-2.102.292a.5.5 0 1 0 .276.962z" />
-                    <path fill-rule="evenodd"
-                        d="M7.964 1.527c-2.977 0-5.571 1.704-6.32 4.125h-.55A1 1 0 0 0 .11 6.824l.254 1.46a1.5 1.5 0 0 0 1.478 1.243h.263c.3.513.688.978 1.145 1.382l-.729 2.477a.5.5 0 0 0 .48.641h2a.5.5 0 0 0 .471-.332l.482-1.351c.635.173 1.31.267 2.011.267.707 0 1.388-.095 2.028-.272l.543 1.372a.5.5 0 0 0 .465.316h2a.5.5 0 0 0 .478-.645l-.761-2.506C13.81 9.895 14.5 8.559 14.5 7.069c0-.145-.007-.29-.02-.431.261-.11.508-.266.705-.444.315.306.815.306.815-.417 0 .223-.5.223-.461-.026a.95.95 0 0 0 .09-.255.7.7 0 0 0-.202-.645.58.58 0 0 0-.707-.098.735.735 0 0 0-.375.562c-.024.243.082.48.32.654a2.112 2.112 0 0 1-.259.153c-.534-2.664-3.284-4.595-6.442-4.595zM2.516 6.26c.455-2.066 2.667-3.733 5.448-3.733 3.146 0 5.536 2.114 5.536 4.542 0 1.254-.624 2.41-1.67 3.248a.5.5 0 0 0-.165.535l.66 2.175h-.985l-.59-1.487a.5.5 0 0 0-.629-.288c-.661.23-1.39.359-2.157.359a6.558 6.558 0 0 1-2.157-.359.5.5 0 0 0-.635.304l-.525 1.471h-.979l.633-2.15a.5.5 0 0 0-.17-.534 4.649 4.649 0 0 1-1.284-1.541.5.5 0 0 0-.446-.275h-.56a.5.5 0 0 1-.492-.414l-.254-1.46h.933a.5.5 0 0 0 .488-.393zm12.621-.857a.565.565 0 0 1-.098.21.704.704 0 0 1-.044-.025c-.146-.09-.157-.175-.152-.223a.236.236 0 0 1 .117-.173c.049-.027.08-.021.113.012a.202.202 0 0 1 .064.199z" />
-                </svg></p>
-            <p class="heading">total income</p>
-            <p class="bigNumbers" id="totalIncome"></p>
-            <p class="headingSmall">total purchases</p>
-            <p class="extraData" id="totalPurchases"></p>
-            <hr>
-        </div>
+        <p id="status" hidden></p>
 
-        <input type="password" id="apiKey"
-            onkeyup='saveValue(this);setTimeout(function() {document.location.reload()}, 1000);'
-            onkeydown='document.getElementById("apiKey").type = "text";document.getElementById("apiKey").style.color = "white";'
-            placeholder="paste api key here" />
+        <section id="empty" hidden>
+            <h1>No key yet</h1>
+            <p>Add a k&#8209;pay key to load sales.</p>
+            <button class="btn primary" type="button" data-open-key>Add key</button>
+        </section>
 
+        <main id="dash" hidden>
+            <div class="col">
+            <section class="today">
+                <p class="label">Sales today</p>
+                <div class="herorow">
+                    <div id="today" class="num">0.00</div>
+                    <div id="delta" class="num" hidden></div>
+                </div>
+                <p class="compare">yesterday <b id="yesterdaySales">0.00</b></p>
+            </section>
+
+            <section class="stats rule">
+                <div class="trio">
+                    <div class="stat">
+                        <p class="label">Rank</p>
+                        <p class="v num" id="rank">—</p>
+                        <p class="y">yesterday <b id="yesterdayRank">—</b></p>
+                    </div>
+                    <div class="stat">
+                        <p class="label">Avg price</p>
+                        <p class="v num" id="average">0.00</p>
+                        <p class="y">yesterday <b id="yesterdayAveragePrice">0.00</b></p>
+                    </div>
+                    <div class="stat">
+                        <p class="label">Purchases</p>
+                        <p class="v num" id="numberToday">0</p>
+                        <p class="y">yesterday <b id="numberYesterday">0</b></p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="split rule">
+                <p class="label">Today by store</p>
+                <div class="splitgrid">
+                    <div></div>
+                    <div class="colhead">sales</div>
+                    <div class="pair">
+                        <div class="colhead">rank</div>
+                        <div class="colhead">sold</div>
+                    </div>
+
+                    <div class="platname fitbit"><span class="mark fitbit"></span>Fitbit</div>
+                    <div class="n num" id="fitbitSales">0.00</div>
+                    <div class="pair">
+                        <div class="n num" id="fitbitRank">—</div>
+                        <div class="n num" id="fitbitPurchases">0</div>
+                    </div>
+
+                    <div class="platname garmin"><span class="mark garmin"></span>Garmin</div>
+                    <div class="n num" id="garminSales">0.00</div>
+                    <div class="pair">
+                        <div class="n num" id="garminRank">—</div>
+                        <div class="n num" id="garminPurchases">0</div>
+                    </div>
+                </div>
+            </section>
+
+            </div>
+
+            <section class="feed">
+                <p class="label">Recent sales</p>
+                <ul id="history"></ul>
+                <div class="feedfoot" id="feedfoot" hidden>
+                    <nav class="pager" id="pager" aria-label="Recent sales pages"></nav>
+                </div>
+            </section>
+
+            <section class="ledger rule">
+                <div class="ledgergrid">
+                    <div>
+                        <p class="label">This month</p>
+                        <p class="v" id="salesMonth">0.00</p>
+                    </div>
+                    <div>
+                        <p class="label">Payout</p>
+                        <p class="v date" id="payoutDate">—</p>
+                    </div>
+                    <div>
+                        <p class="label">Last month</p>
+                        <p class="v second" id="lastMonthSales">0.00</p>
+                    </div>
+                    <div>
+                        <p class="label">Total income</p>
+                        <p class="v" id="totalIncome">0.00</p>
+                    </div>
+                    <div>
+                        <p class="label">Total purchases</p>
+                        <p class="v second" id="totalPurchases">0</p>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
+
+    <dialog id="keyPanel" aria-labelledby="keyTitle">
+        <form class="panel" id="keyForm" novalidate>
+            <h2 id="keyTitle">API key</h2>
+            <p class="note">Kept in this browser only.</p>
+            <label>
+                <span class="inputwrap">
+                    <input id="keyInput" type="password" placeholder="paste key" aria-label="API key"
+                        autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+                        enterkeyhint="go" />
+                    <button type="button" id="revealBtn" aria-label="Show key" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M2 12s3.8-6.8 10-6.8S22 12 22 12s-3.8 6.8-10 6.8S2 12 2 12Z" />
+                            <circle cx="12" cy="12" r="2.8" />
+                            <line class="slash" x1="3.5" y1="20.5" x2="20.5" y2="3.5" />
+                        </svg>
+                    </button>
+                </span>
+            </label>
+            <p id="keyMsg" role="status" aria-live="polite"></p>
+            <div class="panelrow">
+                <button type="button" class="btn quiet" id="removeKey" hidden>Remove key</button>
+                <span class="spacer"></span>
+                <button type="button" class="btn ghost" id="cancelKey">Cancel</button>
+                <button type="submit" class="btn primary" id="saveKey">Save</button>
+            </div>
+        </form>
+    </dialog>
+
+    <script>
+        (function () {
+            'use strict';
+
+            var API = 'https://api.k-pay.io/api/merchant';
+            var KEY_STORE = 'apiKey';
+            var SNAP_STORE = 'kpaySnapshot';
+            var SEEN_STORE = 'lastTotal';
+            var POLL_MS = 300000;
+            var MIN_GAP_MS = 45000;
+            var FEED_MAX = 8;
+            var HISTORY_ROWS = 40;
+            var page = 0;
+
+            var $ = function (id) { return document.getElementById(id); };
+            var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function read(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+            function write(k, v) { try { localStorage.setItem(k, v); } catch (e) { } }
+            function drop(k) { try { localStorage.removeItem(k); } catch (e) { } }
+
+            function money(n) {
+                n = Number(n);
+                if (!isFinite(n)) n = 0;
+                return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+            function count(n) {
+                n = Number(n);
+                if (!isFinite(n)) n = 0;
+                return Math.round(n).toLocaleString('en-US');
+            }
+            function clock(d) { return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }); }
+            function day(d) { return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
+
+            function parsePaid(s) {
+                if (!s) return null;
+                var t = String(s).trim().replace(/\s+/, 'T');
+                if (!/[Zz]$|[+-]\d{2}:?\d{2}$/.test(t)) t += 'Z';
+                var d = new Date(t);
+                return isNaN(d.getTime()) ? null : d;
+            }
+
+            var SHORT = {
+                'United States': 'USA', 'United Kingdom': 'UK', 'Australia': 'AUS',
+                'New Zealand': 'NZ', 'United Arab Emirates': 'UAE'
+            };
+
+            var key = (read(KEY_STORE) || '').trim();
+
+            function api(path, params, withKey) {
+                var q = new URLSearchParams(params || {});
+                q.set('key', withKey === undefined ? key : withKey);
+                return fetch(API + '/' + path + '?' + q.toString(), {
+                    cache: 'no-store', referrerPolicy: 'no-referrer'
+                }).then(function (r) {
+                    if (r.ok) return r.json();
+                    return r.text().then(function (body) {
+                        var e = new Error('HTTP ' + r.status);
+                        e.status = r.status;
+                        e.denied = /no valid merchant|no api key/i.test(body);
+                        throw e;
+                    });
+                });
+            }
+
+            function looksAuthed(d) {
+                return !!d && (d.amount !== undefined || d.purchases !== undefined || d.rank !== undefined ||
+                    d.currentBalance !== undefined || d.totalIncome !== undefined);
+            }
+
+            var state = { today: null, yesterday: null, fitbit: null, garmin: null, summary: null, history: null, at: 0 };
+            try {
+                var cached = JSON.parse(read(SNAP_STORE) || 'null');
+                if (cached && cached.at) state = cached;
+            } catch (e) { }
+
+            function paintHero(value) {
+                var node = $('today');
+                var from = Number(node.dataset.v || 0);
+                node.dataset.v = value;
+                if (reduceMotion || !from || Math.abs(value - from) < 0.005) {
+                    node.textContent = money(value);
+                    return;
+                }
+                var start = performance.now();
+                requestAnimationFrame(function step(now) {
+                    var p = Math.min(1, (now - start) / 500);
+                    var eased = 1 - Math.pow(1 - p, 3);
+                    node.textContent = money(from + (value - from) * eased);
+                    if (p < 1) requestAnimationFrame(step);
+                });
+            }
+
+            function avg(d) {
+                if (!d || !d.purchases) return 0;
+                return Number(d.amount || 0) / Number(d.purchases);
+            }
+
+            function render() {
+                var t = state.today || {}, y = state.yesterday || {};
+
+                paintHero(Number(t.amount || 0));
+                $('rank').innerHTML = t.rank ? '<span class="pre">#</span>' + count(t.rank) : '&mdash;';
+                $('average').textContent = money(avg(t));
+                $('numberToday').textContent = count(t.purchases);
+
+                $('yesterdaySales').textContent = money(y.amount);
+                $('yesterdayRank').textContent = y.rank ? '#' + count(y.rank) : '—';
+                $('yesterdayAveragePrice').textContent = money(avg(y));
+                $('numberYesterday').textContent = count(y.purchases);
+
+                ['fitbit', 'garmin'].forEach(function (p) {
+                    var d = state[p] || {}, cap = p.charAt(0).toUpperCase() + p.slice(1);
+                    $(p + 'Sales').textContent = money(d.amount);
+                    $(p + 'Rank').innerHTML = d.rank ? '<span class="pre">#</span>' + count(d.rank) : '&mdash;';
+                    $(p + 'Purchases').textContent = count(d.purchases);
+                });
+
+                renderSummary();
+                renderHistory();
+
+                if (state.at) {
+                    $('lastRefresh').textContent = clock(new Date(state.at));
+                    showMeta(true);
+                }
+            }
+
+            function renderSummary() {
+                var s = state.summary;
+                if (!s || s.currentBalance === undefined) return;
+
+                var next = s.nextPayout || {}, prev = s.previousPayout || {};
+
+                var thisMonth, lastMonth;
+                if (s.currentBalance === next.amount) {
+                    thisMonth = next.amount || 0;
+                    lastMonth = prev.amount || 0;
+                } else {
+                    thisMonth = (s.currentBalance - next.amount) || 0;
+                    lastMonth = next.amount || 0;
+                }
+
+                $('salesMonth').textContent = money(thisMonth);
+                $('lastMonthSales').textContent = money(lastMonth);
+                $('totalIncome').textContent = money(s.totalIncome);
+                $('totalPurchases').textContent = count(s.totalPurchases);
+
+                var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(next.date || ''));
+                $('payoutDate').textContent = m
+                    ? new Date(Date.UTC(+m[1], +m[2] - 1, +m[3])).toLocaleDateString('en-US',
+                        { month: 'short', day: 'numeric', timeZone: 'UTC' })
+                    : '—';
+
+                checkDelta(Number(s.totalIncome || 0));
+            }
+
+            function renderHistory() {
+                var list = $('history');
+                var rows = (state.history && state.history.purchases) || [];
+                var pages = Math.max(1, Math.ceil(rows.length / FEED_MAX));
+                if (page > pages - 1) page = pages - 1;
+
+                list.textContent = '';
+                renderPager(pages);
+
+                if (!rows.length) {
+                    var none = document.createElement('li');
+                    none.className = 'product';
+                    none.style.borderLeftColor = 'transparent';
+                    none.textContent = 'No sales yet.';
+                    list.appendChild(none);
+                    return;
+                }
+
+                rows.slice(page * FEED_MAX, page * FEED_MAX + FEED_MAX).forEach(function (p) {
+                    var li = document.createElement('li');
+                    li.className = p.platform === 'Fitbit' ? 'fb' : p.platform === 'Garmin' ? 'gm' : '';
+
+                    var head = document.createElement('div');
+                    head.className = 'saleline';
+                    var when = parsePaid(p.paidDate);
+                    head.appendChild(span('saletime', when ? clock(when) : '—'));
+                    head.appendChild(span('saledate', when && !isToday(when) ? day(when) : ''));
+                    head.appendChild(span('country', SHORT[p.country] || p.country || ''));
+                    li.appendChild(head);
+
+                    var name = document.createElement('div');
+                    name.className = 'product';
+                    name.appendChild(document.createTextNode(p.product || 'Unknown'));
+                    if (p.bundleTriggeredBy) name.appendChild(span('bundle', ' with ' + p.bundleTriggeredBy));
+                    li.appendChild(name);
+
+                    var dev = document.createElement('div');
+                    dev.className = 'device ' + (p.platform || '').toLowerCase();
+                    dev.textContent = String(p.device || '').replace(/\s*\(.*?\)\s*/g, ' ').trim();
+                    li.appendChild(dev);
+
+                    list.appendChild(li);
+                });
+
+                var first = parsePaid(rows[0].paidDate);
+                $('lastSale').textContent = first ? clock(first) + ' ' + day(first) : '—';
+            }
+
+            function isToday(d) {
+                return d.toDateString() === new Date().toDateString();
+            }
+
+            function renderPager(pages) {
+                var nav = $('pager');
+                nav.textContent = '';
+                $('feedfoot').hidden = pages < 2;
+                if (pages < 2) return;
+
+                for (var i = 0; i < pages; i++) {
+                    nav.appendChild(pageButton(i));
+                }
+            }
+
+            function pageButton(i) {
+                var b = document.createElement('button');
+                b.type = 'button';
+                b.textContent = String(i + 1);
+                b.setAttribute('aria-label', 'Sales page ' + (i + 1));
+                if (i === page) b.setAttribute('aria-current', 'true');
+                b.addEventListener('click', function () {
+                    if (page === i) return;
+                    page = i;
+                    renderHistory();
+                });
+                return b;
+            }
+
+            function showMeta(on) {
+                $('metaChecked').hidden = !on;
+                $('metaSale').hidden = !on;
+            }
+
+            function span(cls, text) {
+                var s = document.createElement('span');
+                s.className = cls;
+                s.textContent = text;
+                return s;
+            }
+
+            var seenTimer = null;
+
+            function checkDelta(total) {
+                var seen = parseFloat(read(SEEN_STORE));
+                if (!isFinite(seen)) { write(SEEN_STORE, total); return; }
+                var gain = total - seen;
+                var pill = $('delta');
+                if (gain > 0.004) {
+                    pill.textContent = '▲ ' + money(gain);
+                    pill.hidden = false;
+                    armSeen(total);
+                } else {
+                    pill.hidden = true;
+                    write(SEEN_STORE, total);
+                }
+            }
+
+            function armSeen(total) {
+                clearTimeout(seenTimer);
+                if (document.visibilityState !== 'visible') return;
+                seenTimer = setTimeout(function () {
+                    write(SEEN_STORE, total);
+                    $('delta').hidden = true;
+                }, 7000);
+            }
+
+            function status(text, bad) {
+                var el = $('status');
+                if (!text) { el.hidden = true; el.textContent = ''; return; }
+                el.textContent = '';
+                el.className = bad ? 'bad' : '';
+                el.appendChild(document.createTextNode(text));
+                if (bad) {
+                    var b = document.createElement('button');
+                    b.type = 'button';
+                    b.textContent = 'Check key';
+                    b.setAttribute('data-open-key', '');
+                    el.appendChild(b);
+                }
+                el.hidden = false;
+            }
+
+            var TTL = { history: 1800000, store: 900000, summary: 1800000 };
+            var busy = false;
+            var unauthed = 0;
+            var backoffUntil = 0, backoffMs = 0;
+
+            function dayKey() { return new Date().toDateString(); }
+
+            function aged(name, ttl) {
+                var t = state.stamps && state.stamps[name];
+                return !t || Date.now() - t > ttl;
+            }
+
+            function holdOff() {
+                backoffMs = Math.min(backoffMs ? backoffMs * 2 : 600000, 1800000);
+                backoffUntil = Date.now() + backoffMs;
+            }
+
+            function done() {
+                busy = false;
+                document.body.classList.remove('is-busy');
+            }
+
+            function refresh(force) {
+                if (!key || busy) return;
+                if (!force) {
+                    if (document.hidden) return;
+                    if (Date.now() < backoffUntil) return;
+                    if (state.at && Date.now() - state.at < MIN_GAP_MS) return;
+                } else if (state.at && Date.now() - state.at < 8000) return;
+
+                busy = true;
+                document.body.classList.add('is-busy');
+
+                var offset = new Date().getTimezoneOffset();
+                var rateLimited = false;
+                state.stamps = state.stamps || {};
+
+                api('today', { offset: offset }).then(function (t) {
+                    if (!looksAuthed(t)) {
+                        unauthed++;
+                        throw (unauthed >= 3 || !state.at) ? { denied: true } : { soft: true };
+                    }
+                    unauthed = 0;
+
+                    var was = state.today;
+                    var moved = !was || Number(t.amount) !== Number(was.amount) ||
+                        Number(t.purchases) !== Number(was.purchases);
+
+                    state.today = t;
+                    state.stamps.today = Date.now();
+
+                    var jobs = [];
+                    if (moved || force || aged('history', TTL.history)) {
+                        jobs.push(['history', api('history', { sort: 'desc', amount: HISTORY_ROWS })]);
+                    }
+                    if (moved || aged('store', TTL.store)) {
+                        jobs.push(['fitbit', api('today', { platform: 'fitbit', offset: offset })]);
+                        jobs.push(['garmin', api('today', { platform: 'garmin', offset: offset })]);
+                    }
+                    if (moved || aged('summary', TTL.summary)) {
+                        jobs.push(['summary', api('summary')]);
+                    }
+                    if (state.yesterdayFor !== dayKey()) {
+                        jobs.push(['yesterday', api('yesterday', { offset: offset })]);
+                    }
+
+                    return Promise.all(jobs.map(function (j) {
+                        return j[1].then(function (v) {
+                            state[j[0]] = v;
+                            state.stamps[j[0] === 'fitbit' || j[0] === 'garmin' ? 'store' : j[0]] = Date.now();
+                            if (j[0] === 'yesterday') state.yesterdayFor = dayKey();
+                        }, function (e) {
+                            if (e && e.status === 429) rateLimited = true;
+                        });
+                    }));
+                }).then(function () {
+                    done();
+                    state.at = Date.now();
+                    write(SNAP_STORE, JSON.stringify(state));
+
+                    if (rateLimited) {
+                        holdOff();
+                        status('Rate limited. Next try ' + clock(new Date(backoffUntil)) + '.');
+                    } else {
+                        backoffMs = 0;
+                        backoffUntil = 0;
+                        status('');
+                    }
+                    render();
+                }).catch(function (e) {
+                    done();
+                    if (e && e.denied) { status('Key rejected. ', true); return; }
+                    if (e && e.status === 429) {
+                        holdOff();
+                        status('Rate limited. Next try ' + clock(new Date(backoffUntil)) + '.');
+                        return;
+                    }
+                    status("Can't reach k-pay. Showing last figures.");
+                });
+            }
+
+            var panel = $('keyPanel'), input = $('keyInput'), msg = $('keyMsg');
+
+            function openPanel() {
+                input.value = key;
+                input.type = 'password';
+                $('revealBtn').setAttribute('aria-pressed', 'false');
+                $('removeKey').hidden = !key;
+                $('keyTitle').textContent = 'API key';
+                $('saveKey').textContent = 'Save';
+                $('cancelKey').hidden = !key && !state.at;
+                say('');
+                if (panel.showModal) panel.showModal(); else panel.setAttribute('open', '');
+                setTimeout(function () { input.focus(); if (!key) input.select(); }, 30);
+            }
+
+            function closePanel() {
+                if (panel.close) panel.close(); else panel.removeAttribute('open');
+            }
+
+            function say(text, kind) {
+                msg.textContent = text;
+                msg.className = kind || '';
+            }
+
+            $('keyForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                var candidate = input.value.trim();
+                if (!candidate) { say('Paste a key first.', 'bad'); input.focus(); return; }
+
+                $('saveKey').disabled = true;
+                say('Checking...');
+
+                api('today', { offset: new Date().getTimezoneOffset() }, candidate).then(function (d) {
+                    if (!looksAuthed(d)) throw new Error('rejected');
+                    $('saveKey').disabled = false;
+                    key = candidate;
+                    write(KEY_STORE, key);
+                    say('Saved.', 'good');
+                    setTimeout(function () {
+                        closePanel();
+                        $('empty').hidden = true;
+                        $('dash').hidden = false;
+                        $('tools').hidden = false;
+                        status('');
+                        refresh(true);
+                        startLive();
+                    }, 450);
+                }).catch(function (err) {
+                    $('saveKey').disabled = false;
+                    if (err && (err.denied || err.message === 'rejected')) say("Key didn't work.", 'bad');
+                    else if (err && err.status === 429) say('Rate limited. Try again in a minute.', 'bad');
+                    else if (err && err.status) say('k-pay returned ' + err.status + '.', 'bad');
+                    else say("Can't reach k-pay.", 'bad');
+                });
+            });
+
+            $('removeKey').addEventListener('click', function () {
+                key = '';
+                drop(KEY_STORE); drop(SNAP_STORE); drop(SEEN_STORE);
+                state = { today: null, yesterday: null, fitbit: null, garmin: null, summary: null, history: null, at: 0 };
+                closePanel();
+                $('dash').hidden = true;
+                $('tools').hidden = true;
+                showMeta(false);
+                $('empty').hidden = false;
+                status('');
+            });
+
+            $('cancelKey').addEventListener('click', closePanel);
+
+            $('revealBtn').addEventListener('click', function () {
+                var shown = input.type === 'text';
+                input.type = shown ? 'password' : 'text';
+                this.setAttribute('aria-pressed', String(!shown));
+                this.setAttribute('aria-label', shown ? 'Show key' : 'Hide key');
+                input.focus();
+            });
+
+            document.addEventListener('click', function (e) {
+                var t = e.target && e.target.closest && e.target.closest('[data-open-key]');
+                if (t) openPanel();
+            });
+
+            $('keyBtn').addEventListener('click', openPanel);
+            $('refreshBtn').addEventListener('click', function () { status(''); refresh(true); });
+
+            var live = false;
+
+            function startLive() {
+                if (live) return;
+                live = true;
+                setInterval(function () { refresh(false); }, POLL_MS);
+                document.addEventListener('visibilitychange', function () {
+                    if (document.visibilityState !== 'visible') { clearTimeout(seenTimer); return; }
+                    refresh(false);
+                    if (!$('delta').hidden && state.summary) armSeen(Number(state.summary.totalIncome || 0));
+                });
+            }
+
+            if (key) {
+                $('dash').hidden = false;
+                $('tools').hidden = false;
+                render();
+                refresh(true);
+                startLive();
+            } else {
+                $('empty').hidden = false;
+                openPanel();
+            }
+        })();
+    </script>
 </body>
-<script>
-    document.getElementById("apiKey").value = getSavedValue("apiKey");
-
-    let date = new Date();
-    let newTotal = "";
-
-    function saveValue(e) {
-        var id = e.id;
-        var val = e.value;
-        localStorage.setItem(id, val);
-    }
-
-    function getSavedValue(v) {
-        if (!localStorage.getItem(v)) {
-            return "";
-        }
-        return localStorage.getItem(v);
-    }
-
-    let apiKey = getSavedValue("apiKey");
-
-    if (getSavedValue("apiKey") != "") {
-
-        setInterval("location.reload(true);", 300000); // 5 minute refresh
-
-        fetch('https://api.k-pay.io/api/merchant/today?offset=' + date.getTimezoneOffset() + '&key=' + apiKey)
-            .then(res => res
-                .json())
-            .then(salesData => {
-                let todayAmount = salesData.amount || 0;
-                let numberToday = salesData.purchases || 0;
-                let todayRank = salesData.rank || 0;
-                let averagePrice = Math.round(salesData.amount / salesData.purchases * 100) / 100 || 0;
-
-                if (todayAmount === undefined) {
-                    document.getElementById("sales").innerHTML = "api key not found";
-                    document.getElementById("rank").innerHTML = "";
-                    document.getElementById("numberToday").innerHTML = "";
-                } else {
-                    document.getElementById("sales").innerHTML = todayAmount.toFixed(2).toString().replace(
-                        /\B(?=(\d{3})+(?!\d))/g, ",");
-                    document.getElementById("rank").innerHTML = todayRank;
-                    document.getElementById("numberToday").innerHTML = numberToday;
-                    document.getElementById("average").innerHTML = averagePrice.toFixed(2);
-                }
-            })
-
-        fetch('https://api.k-pay.io/api/merchant/today?&platform=fitbit&offset=' + date.getTimezoneOffset() + '&key=' +
-                apiKey)
-            .then(res => res
-                .json())
-            .then(fitbitSalesData => {
-                let fitbitSales = fitbitSalesData.amount || 0;
-                let fitbitRank = fitbitSalesData.rank || 0;
-                let fitbitPurchases = fitbitSalesData.purchases || 0;
-
-                if (fitbitSales === undefined) {
-                    document.getElementById("fitbitSales").innerHTML = "";
-                } else {
-                    document.getElementById("fitbitSales").innerHTML =
-                        "<svg id='FitbitIcon' style='width:16px;height:16px'></svg>" + fitbitSales.toFixed(2)
-                        .toString()
-                        .replace(
-                            /\B(?=(\d{3})+(?!\d))/g, ",") + " — " + fitbitRank;
-                    document.getElementById("fitbitPurchases").innerHTML =
-                        "<svg id='FitbitIcon' style='width:16px;height:16px'></svg>" + fitbitPurchases;
-                }
-            })
-
-        fetch('https://api.k-pay.io/api/merchant/today?&platform=garmin&offset=' + date.getTimezoneOffset() + '&key=' +
-                apiKey)
-            .then(res => res
-                .json())
-            .then(garminSalesData => {
-                let garminSales = garminSalesData.amount || 0;
-                let garminRank = garminSalesData.rank || 0;
-                let garminPurchases = garminSalesData.purchases || 0;
-
-                if (garminSales === undefined) {
-                    document.getElementById("garminSales").innerHTML = "";
-                    document.getElementById("garminPurchases").innerHTML = "";
-                } else {
-                    document.getElementById("garminSales").innerHTML =
-                        "<svg id='GarminIcon' style='width:14px;height:14px'></svg>" + garminSales.toFixed(2)
-                        .toString()
-                        .replace(
-                            /\B(?=(\d{3})+(?!\d))/g, ",") + " — " + garminRank;
-                    document.getElementById("garminPurchases").innerHTML =
-                        "<svg id='GarminIcon' style='width:14px;height:14px'></svg>" + garminPurchases;
-                }
-            })
-
-        fetch('https://api.k-pay.io/api/merchant/yesterday?offset=' + date.getTimezoneOffset() + '&key=' + apiKey)
-            .then(res => res
-                .json())
-            .then(salesDataYesterday => {
-                let yesterdayAmount = salesDataYesterday.amount || 0;
-                let numberYesterday = salesDataYesterday.purchases || 0;
-                let yesterdayRank = salesDataYesterday.rank || 0;
-                let yesterdayAveragePrice = Math.round(salesDataYesterday.amount / salesDataYesterday.purchases *
-                        100) /
-                    100 || 0;
-
-                if (yesterdayAmount === undefined) {
-                    document.getElementById("yesterdaySales").innerHTML = "";
-                    document.getElementById("yesterdayRank").innerHTML = "";
-                    document.getElementById("numberYesterday").innerHTML = "";
-                } else {
-                    document.getElementById("yesterdaySales").innerHTML = yesterdayAmount.toFixed(2)
-                        .toString().replace(
-                            /\B(?=(\d{3})+(?!\d))/g, ",");
-                    document.getElementById("yesterdayRank").innerHTML = yesterdayRank;
-                    document.getElementById("numberYesterday").innerHTML = numberYesterday;
-                    document.getElementById("yesterdayAveragePrice").innerHTML = yesterdayAveragePrice
-                        .toFixed(2);
-                }
-            })
-
-        fetch('https://api.k-pay.io/api/merchant/summary?&key=' + apiKey)
-            .then(res => res
-                .json())
-            .then(monthData => {
-                let thisMonthAmount = monthData.currentBalance;
-                let lastMonthAmount = monthData.previousPayout.amount || 0;
-                let totalPurchases;
-                let totalIncome;
-                let payoutDate;
-
-
-                if (thisMonthAmount != undefined) {
-                    totalPurchases = monthData.totalPurchases || 0;
-                    totalIncome = monthData.totalIncome || 0;
-                    payoutDate = monthData.nextPayout.date || 0;
-
-                    if (localStorage.getItem("lastTotal") < totalIncome && localStorage.getItem("lastTotal") !==
-                        null) {
-                        newTotal = "▲ " + (totalIncome - localStorage.getItem("lastTotal")).toFixed(2).toString()
-                            .replace(
-                                /\B(?=(\d{3})+(?!\d))/g, ",");
-                        document.getElementById("saleStore").innerHTML = "<span class='saleIncrease'>" + newTotal +
-                            "</span>";
-                    }
-
-                    localStorage.setItem("lastTotal", totalIncome);
-
-                    if (monthData.currentBalance === monthData.nextPayout.amount) {
-                        thisMonthAmount = monthData.nextPayout.amount || 0;
-                        lastMonthAmount = monthData.previousPayout.amount || 0;
-                    } else {
-                        thisMonthAmount = monthData.currentBalance - monthData.nextPayout.amount || 0;
-                        lastMonthAmount = monthData.nextPayout.amount || 0;
-                    }
-
-                    document.getElementById("salesMonth").innerHTML = thisMonthAmount.toFixed(2).toString()
-                        .replace(
-                            /\B(?=(\d{3})+(?!\d))/g, ",");
-                    document.getElementById("lastMonthSales").innerHTML = lastMonthAmount.toFixed(2)
-                        .toString().replace(
-                            /\B(?=(\d{3})+(?!\d))/g, ",");
-                    document.getElementById("totalPurchases").innerHTML = totalPurchases.toString().replace(
-                        /\B(?=(\d{3})+(?!\d))/g, ",");;
-                    document.getElementById("totalIncome").innerHTML = totalIncome.toFixed(2).toString()
-                        .replace(
-                            /\B(?=(\d{3})+(?!\d))/g, ",");
-
-                    let newDate = payoutDate.substr(8, 2);
-                    let newMonth = payoutDate.substr(5, 2);
-                    if (newMonth === "01") {
-                        newMonth = "Jan";
-                    } else if (newMonth === "02") {
-                        newMonth = "Feb";
-                    } else if (newMonth === "03") {
-                        newMonth = "Mar";
-                    } else if (newMonth === "04") {
-                        newMonth = "Apr";
-                    } else if (newMonth === "05") {
-                        newMonth = "May";
-                    } else if (newMonth === "06") {
-                        newMonth = "Jun";
-                    } else if (newMonth === "07") {
-                        newMonth = "Jul";
-                    } else if (newMonth === "08") {
-                        newMonth = "Aug";
-                    } else if (newMonth === "09") {
-                        newMonth = "Sep";
-                    } else if (newMonth === "10") {
-                        newMonth = "Oct";
-                    } else if (newMonth === "11") {
-                        newMonth = "Nov";
-                    } else if (newMonth === "12") {
-                        newMonth = "Dec";
-                    }
-
-                    document.getElementById("payoutDate").innerHTML = newMonth + " " + newDate;
-                } else {
-                    document.getElementById("salesMonth").innerHTML = "0.00";
-                    document.getElementById("lastMonthSales").innerHTML = "0.00";
-                    document.getElementById("totalIncome").innerHTML = "0.00";
-                    document.getElementById("totalPurchases").innerHTML = "0";
-                }
-            })
-
-        fetch('https://api.k-pay.io/api/merchant/history?sort=desc&amount=10&key=' + apiKey)
-            .then(res => res
-                .json())
-            .then(historyData => {
-                let historyName = "";
-                if (historyData.purchases === undefined) {
-                    document.getElementById("lastSale").innerHTML =
-                        "<span id='Fitbit'>Invalid API Key or too many requests. Check API key or wait before refreshing again.</span>";
-                } else {
-                    var i;
-                    for (i = 0; i < 7; i++) {
-                        let purchaseTime = historyData.purchases[i].paidDate.replace(/\s/g, '') + "Z" || "--";
-                        let e = purchaseTime.substring(0, 10) + "T" + purchaseTime.substring(10);
-                        let d = new Date(e);
-                        let f = d.toString().substring(21, 16);
-                        let H = +f.substr(0, 2);
-                        let ampm = "";
-                        if (H < 12) {
-                            ampm = "AM";
-                        } else {
-                            ampm = "PM";
-                        }
-                        let h = H % 12 || 12;
-                        let j = d.toString().substring(4, 10);
-                        let bundleTrigger = "";
-                        let countryName = ""; // shorten some country names to make it look better on mobile
-                        if (historyData.purchases[i].country === "United States") {
-                            countryName = "USA";
-                        } else if (historyData.purchases[i].country === "United Kingdom") {
-                            countryName = "UK";
-                        } else if (historyData.purchases[i].country === "Australia") {
-                            countryName = "AUS";
-                        } else if (historyData.purchases[i].country === "New Zealand") {
-                            countryName = "NZ";
-                        } else if (historyData.purchases[i].country === "United Arab Emirates") {
-                            countryName = "UAE";
-                        } else {
-                            countryName = historyData.purchases[i].country;
-                        };
-                        if (historyData.purchases[i].bundleTriggeredBy !== null) {
-                            bundleTrigger = " (" + historyData.purchases[i].bundleTriggeredBy + ")";
-                        }
-                        historyName = historyName + "<span id='saleTime'>" + h + f.substr(2, 3) + " " + ampm +
-                            "&nbsp;" +
-                            "</span><span id='saleDate'> " + j + " &#8212; " + "<span style='color:#CCC;'>" +
-                            countryName +
-                            "</span></span><br>" + "<span id='productName'>" + historyData.purchases[i].product +
-                            bundleTrigger + "</span>" +
-                            "<br>" + "<svg id='" + historyData.purchases[i].platform + "Icon'></svg><span id='" +
-                            historyData.purchases[i].platform + "'>" + historyData.purchases[i].device.replace(
-                                /\s*\(.*?\)\s*/g, '').replace(/(.{31})..+/, "$1&hellip;") +
-                            "</span>" +
-                            "<br><hr>";
-                        document.getElementById("history").innerHTML = historyName + "<br>";
-                    }
-                    let purchaseTime = historyData.purchases[0].paidDate.replace(/\s/g, '') + "Z" || "--";
-                    let e = purchaseTime.substring(0, 10) + "T" + purchaseTime.substring(10);
-                    let d = new Date(e);
-                    let f = d.toString().substring(21, 16);
-                    let H = +f.substr(0, 2);
-                    let ampm = "";
-                    if (H < 12) {
-                        ampm = "AM";
-                    } else {
-                        ampm = "PM";
-                    }
-                    let h = H % 12 || 12;
-                    let j = d.toString().substring(4, 10);
-                    let lastRefreshTime = new Date();
-                    let lastRefreshDate = lastRefreshTime.toString().substr(4, 6);
-                    document.getElementById("lastSale").innerHTML = "last sale &#8212; " + "<span id='saleTime'>" +
-                        h + f
-                        .substr(2, 3) + " " + ampm + "&nbsp;" + "</span><span id='saleDate'> " + j + "</span>" +
-                        "<span style='float:right; display:inline-block;padding-right:20px;'>&nbsp;&nbsp;&nbsp;&nbsp;<span id='saleTime'>⟳ " +
-                        lastRefreshTime.toLocaleString('en-US', {
-                            hour: 'numeric',
-                            minute: 'numeric',
-                            hour12: true
-                        }) + "</span> <span id='saleDate'>&nbsp;" + lastRefreshDate + "</span></span>";
-                }
-            })
-    } else {
-        document.getElementById("lastSale").innerHTML = "<span id='Fitbit'>No API key</span>";
-    }
-</script>
 
 </html>
