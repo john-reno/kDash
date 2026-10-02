@@ -923,9 +923,9 @@
             'use strict';
 
             var API = 'https://api.k-pay.io/api/merchant';
-            var KEY_STORE = 'apiKey';
-            var SNAP_STORE = 'kpaySnapshot';
-            var SEEN_STORE = 'lastTotal';
+            var KEY_STORE = 'kdash.apiKey';
+            var SNAP_STORE = 'kdash.snapshot';
+            var SEEN_STORE = 'kdash.lastTotal';
             var POLL_MS = 300000;
             var MIN_GAP_MS = 45000;
             var FEED_MAX = 8;
@@ -964,6 +964,16 @@
                 'United States': 'USA', 'United Kingdom': 'UK', 'Australia': 'AUS',
                 'New Zealand': 'NZ', 'United Arab Emirates': 'UAE'
             };
+
+            // Every project site on this GitHub Pages origin shares localStorage,
+            // so the stored names are namespaced. Carry over pre-namespace values.
+            [['apiKey', KEY_STORE], ['kpaySnapshot', SNAP_STORE], ['lastTotal', SEEN_STORE]].forEach(function (m) {
+                var old = read(m[0]);
+                if (old !== null) {
+                    if (read(m[1]) === null) write(m[1], old);
+                    drop(m[0]);
+                }
+            });
 
             var key = (read(KEY_STORE) || '').trim();
 
@@ -1040,7 +1050,7 @@
                 renderHistory();
 
                 if (state.at) {
-                    $('lastRefresh').textContent = clock(new Date(state.at));
+                    $('lastRefresh').textContent = clock(new Date(state.at)) + (state.partial ? ' (partial)' : '');
                     showMeta(true);
                 }
             }
@@ -1052,7 +1062,7 @@
                 var next = s.nextPayout || {}, prev = s.previousPayout || {};
 
                 var thisMonth, lastMonth;
-                if (s.currentBalance === next.amount) {
+                if (Math.abs(Number(s.currentBalance) - Number(next.amount)) < 0.005) {
                     thisMonth = next.amount || 0;
                     lastMonth = prev.amount || 0;
                 } else {
@@ -1087,10 +1097,21 @@
                 var today = Date.UTC(n.getFullYear(), n.getMonth(), n.getDate());
                 var out = new Date(d.getTime());
                 var guard = 0;
+                // A period ending on the last day of a month rolls by calendar
+                // months - a fixed day step drifts (Sep 30 + 30 days is Oct 30).
+                var monthly = isMonthEnd(d);
                 while (out.getTime() < today && guard++ < 400) {
-                    out = new Date(out.getTime() + step * 86400000);
+                    out = monthly ? nextMonthEnd(out) : new Date(out.getTime() + step * 86400000);
                 }
                 return out;
+            }
+
+            function isMonthEnd(d) {
+                return d.getUTCDate() === new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)).getUTCDate();
+            }
+
+            function nextMonthEnd(d) {
+                return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 2, 0));
             }
 
             function isoDate(v) {
@@ -1224,6 +1245,7 @@
 
             var TTL = { history: 1800000, store: 900000, summary: 1800000 };
             var busy = false;
+            var gen = 0;
             var unauthed = 0;
             var backoffUntil = 0, backoffMs = 0;
 
@@ -1255,11 +1277,18 @@
                 busy = true;
                 document.body.classList.add('is-busy');
 
+                // One run sticks to one key and one generation. Saving a
+                // different key mid-flight abandons the run instead of mixing
+                // two accounts into one snapshot.
+                var myGen = gen;
+                var myKey = key;
                 var offset = new Date().getTimezoneOffset();
                 var rateLimited = false;
+                var failed = 0;
                 state.stamps = state.stamps || {};
 
-                api('today', { offset: offset }).then(function (t) {
+                api('today', { offset: offset }, myKey).then(function (t) {
+                    if (myGen !== gen) return;
                     if (!looksAuthed(t)) {
                         unauthed++;
                         throw (unauthed >= 3 || !state.at) ? { denied: true } : { soft: true };
@@ -1275,31 +1304,36 @@
 
                     var jobs = [];
                     if (moved || force || aged('history', TTL.history)) {
-                        jobs.push(['history', api('history', { sort: 'desc', amount: HISTORY_ROWS })]);
+                        jobs.push(['history', api('history', { sort: 'desc', amount: HISTORY_ROWS }, myKey)]);
                     }
                     if (moved || aged('store', TTL.store)) {
-                        jobs.push(['fitbit', api('today', { platform: 'fitbit', offset: offset })]);
-                        jobs.push(['garmin', api('today', { platform: 'garmin', offset: offset })]);
+                        jobs.push(['fitbit', api('today', { platform: 'fitbit', offset: offset }, myKey)]);
+                        jobs.push(['garmin', api('today', { platform: 'garmin', offset: offset }, myKey)]);
                     }
                     if (moved || aged('summary', TTL.summary)) {
-                        jobs.push(['summary', api('summary')]);
+                        jobs.push(['summary', api('summary', null, myKey)]);
                     }
                     if (state.yesterdayFor !== dayKey()) {
-                        jobs.push(['yesterday', api('yesterday', { offset: offset })]);
+                        jobs.push(['yesterday', api('yesterday', { offset: offset }, myKey)]);
                     }
 
                     return Promise.all(jobs.map(function (j) {
                         return j[1].then(function (v) {
+                            if (myGen !== gen) return;
                             state[j[0]] = v;
                             state.stamps[j[0] === 'fitbit' || j[0] === 'garmin' ? 'store' : j[0]] = Date.now();
                             if (j[0] === 'yesterday') state.yesterdayFor = dayKey();
                         }, function (e) {
+                            if (myGen !== gen) return;
                             if (e && e.status === 429) rateLimited = true;
+                            failed++;
                         });
                     }));
                 }).then(function () {
+                    if (myGen !== gen) return;
                     done();
                     state.at = Date.now();
+                    state.partial = failed > 0;
                     write(SNAP_STORE, JSON.stringify(state));
 
                     if (rateLimited) {
@@ -1312,6 +1346,7 @@
                     }
                     render();
                 }).catch(function (e) {
+                    if (myGen !== gen) return;
                     done();
                     if (e && e.denied) { status('Key rejected. ', true); return; }
                     if (e && e.status === 429) {
@@ -1358,8 +1393,22 @@
                 api('today', { offset: new Date().getTimezoneOffset() }, candidate).then(function (d) {
                     if (!looksAuthed(d)) throw new Error('rejected');
                     $('saveKey').disabled = false;
+                    var switched = candidate !== key;
                     key = candidate;
                     write(KEY_STORE, key);
+                    if (switched) {
+                        // A different account: clear the old one's figures the
+                        // way Remove does, and abandon any refresh in flight.
+                        gen++;
+                        done();
+                        drop(SNAP_STORE); drop(SEEN_STORE);
+                        state = { today: null, yesterday: null, fitbit: null, garmin: null, summary: null, history: null, at: 0 };
+                        page = 0;
+                        unauthed = 0;
+                        backoffMs = 0;
+                        backoffUntil = 0;
+                        showMeta(false);
+                    }
                     say('Saved.', 'good');
                     setTimeout(function () {
                         closePanel();
